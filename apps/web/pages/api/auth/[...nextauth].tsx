@@ -1,23 +1,23 @@
 import { IdentityProvider, UserPermissionRole } from "@prisma/client";
 import { readFileSync } from "fs";
 import Handlebars from "handlebars";
+import { verify } from "jsonwebtoken";
+import { get, set } from "lodash";
 import NextAuth, { Session } from "next-auth";
 import { Provider } from "next-auth/providers";
 import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import nodemailer, { TransportOptions } from "nodemailer";
-import { authenticator } from "otplib";
 import path from "path";
 
 import checkLicense from "@calcom/ee/server/checkLicense";
 import { WEBSITE_URL } from "@calcom/lib/constants";
-import { symmetricDecrypt } from "@calcom/lib/crypto";
 import { defaultCookies } from "@calcom/lib/default-cookies";
 import { serverConfig } from "@calcom/lib/serverConfig";
 import ImpersonationProvider from "@ee/lib/impersonation/ImpersonationProvider";
 
-import { ErrorCode, verifyPassword } from "@lib/auth";
+import { ErrorCode } from "@lib/auth";
 import CalComAdapter from "@lib/auth/next-auth-custom-adapter";
 import prisma from "@lib/prisma";
 import { randomString } from "@lib/random";
@@ -38,9 +38,7 @@ const providers: Provider[] = [
     name: "Cal.com",
     type: "credentials",
     credentials: {
-      email: { label: "Email Address", type: "email", placeholder: "john.doe@example.com" },
-      password: { label: "Password", type: "password", placeholder: "Your super secure password" },
-      totpCode: { label: "Two-factor Code", type: "input", placeholder: "Code from authenticator app" },
+      token: { label: "JWT token", type: "password", placeholder: "Plivo generated JWT token" },
     },
     async authorize(credentials) {
       if (!credentials) {
@@ -48,56 +46,37 @@ const providers: Provider[] = [
         throw new Error(ErrorCode.InternalServerError);
       }
 
+      const token = credentials.token;
+
+      if (!token) {
+        console.error(`For some reason token is missing`);
+        throw new Error(ErrorCode.JwtTokenMissing);
+      }
+
+      const email: string = await new Promise((resolve, reject) => {
+        verify(token, process.env.NEXTAUTH_SECRET as string, (err, decoded) => {
+          console.log(err);
+          if (err) {
+            const error = new Error(ErrorCode.InvalidJwtToken);
+            set(error, "reason", err);
+            reject(error);
+          }
+          const email = get(decoded, "email") as string;
+          if (email) {
+            resolve(get(decoded, "email"));
+          }
+          reject(new Error(ErrorCode.InvalidJwtToken));
+        });
+      });
+
       const user = await prisma.user.findUnique({
         where: {
-          email: credentials.email.toLowerCase(),
+          email: email.toLowerCase(),
         },
       });
 
       if (!user) {
         throw new Error(ErrorCode.UserNotFound);
-      }
-
-      if (user.identityProvider !== IdentityProvider.CAL) {
-        throw new Error(ErrorCode.ThirdPartyIdentityProviderEnabled);
-      }
-
-      if (!user.password) {
-        throw new Error(ErrorCode.UserMissingPassword);
-      }
-
-      const isCorrectPassword = await verifyPassword(credentials.password, user.password);
-      if (!isCorrectPassword) {
-        throw new Error(ErrorCode.IncorrectPassword);
-      }
-
-      if (user.twoFactorEnabled) {
-        if (!credentials.totpCode) {
-          throw new Error(ErrorCode.SecondFactorRequired);
-        }
-
-        if (!user.twoFactorSecret) {
-          console.error(`Two factor is enabled for user ${user.id} but they have no secret`);
-          throw new Error(ErrorCode.InternalServerError);
-        }
-
-        if (!process.env.CALENDSO_ENCRYPTION_KEY) {
-          console.error(`"Missing encryption key; cannot proceed with two factor login."`);
-          throw new Error(ErrorCode.InternalServerError);
-        }
-
-        const secret = symmetricDecrypt(user.twoFactorSecret, process.env.CALENDSO_ENCRYPTION_KEY);
-        if (secret.length !== 32) {
-          console.error(
-            `Two factor secret decryption failed. Expected key with length 32 but got ${secret.length}`
-          );
-          throw new Error(ErrorCode.InternalServerError);
-        }
-
-        const isValidToken = authenticator.check(credentials.totpCode, secret);
-        if (!isValidToken) {
-          throw new Error(ErrorCode.IncorrectTwoFactorCode);
-        }
       }
 
       return {
