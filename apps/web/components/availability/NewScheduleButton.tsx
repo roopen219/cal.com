@@ -47,7 +47,7 @@ export function NewScheduleButton({ name = "new-schedule" }: { name?: string }) 
       </DialogTrigger>
       <DialogContent>
         <div className="mb-8">
-          <h3 className="text-lg font-bold leading-6 text-gray-900" id="modal-title">
+          <h3 className="sellular-title" id="modal-title">
             {t("add_new_schedule")}
           </h3>
         </div>
@@ -57,7 +57,7 @@ export function NewScheduleButton({ name = "new-schedule" }: { name?: string }) 
             createMutation.mutate(values);
           }}>
           <div className="mt-3 space-y-2">
-            <label htmlFor="label" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="label" className="sellular-input-label block">
               {t("name")}
             </label>
             <div className="mt-1">
@@ -65,7 +65,7 @@ export function NewScheduleButton({ name = "new-schedule" }: { name?: string }) 
                 type="text"
                 id="name"
                 required
-                className="block w-full rounded-sm border-gray-300 text-sm"
+                className="sellular-input--text block w-full"
                 placeholder={t("default_schedule_name")}
                 {...register("name")}
               />

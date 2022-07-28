@@ -9,7 +9,7 @@ module.exports = {
   darkMode: "class",
   theme: {
     fontFamily: {
-      cal: ["Cal Sans", "sans-serif"],
+      cal: ["Open Sans", "sans-serif"],
       mono: ["Roboto Mono", "monospace"],
     },
     extend: {
@@ -30,26 +30,26 @@ module.exports = {
         gray: {
           50: "#F8F8F8",
           100: "#F5F5F5",
-          200: "#E1E1E1",
+          200: "#E7ECF2",
           300: "#CFCFCF",
           400: "#ACACAC",
-          500: "#888888",
+          500: "#788599",
           600: "#494949",
-          700: "#3E3E3E",
+          700: "#788599",
           800: "#313131",
-          900: "#292929",
+          900: "#212933",
         },
         neutral: {
           50: "#F8F8F8",
           100: "#F5F5F5",
-          200: "#E1E1E1",
+          200: "#E7ECF2",
           300: "#CFCFCF",
           400: "#ACACAC",
-          500: "#888888",
+          500: "#788599",
           600: "#494949",
-          700: "#3E3E3E",
+          700: "#788599",
           800: "#313131",
-          900: "#292929",
+          900: "#212933",
         },
         primary: {
           50: "#F4F4F4",
@@ -57,7 +57,7 @@ module.exports = {
           200: "#C6C6C6",
           300: "#A3A3A3",
           400: "#5F5F5F",
-          500: "#1A1A1A",
+          500: "#5506be",
           600: "#171717",
           700: "#141414",
           800: "#101010",
@@ -113,7 +113,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        cal: ["Cal Sans", "sans-serif"],
+        cal: ["Open Sans", "sans-serif"],
         mono: ["Roboto Mono", "monospace"],
       },
       maxHeight: (theme) => ({
@@ -142,6 +142,9 @@ module.exports = {
         full: "100%",
         screen: "100vw",
       }),
+      boxShadow: {
+        navbar: "3px 0px 6px rgba(0,0,0,0.06)",
+      },
     },
   },
   plugins: [

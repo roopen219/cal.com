@@ -66,10 +66,8 @@ const NavTabs: FC<NavTabProps> = ({ tabs, linkProps, ...props }) => {
                 <a
                   onClick={onClick}
                   className={classNames(
-                    isCurrent
-                      ? "border-neutral-900 text-neutral-900"
-                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                    "group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium",
+                    isCurrent ? "border-brand text-brand" : "border-transparent font-light text-gray-500",
+                    "group inline-flex items-center border-b-2 py-4 text-sm font-medium",
                     className
                   )}
                   aria-current={isCurrent ? "page" : undefined}>

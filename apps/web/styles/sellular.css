@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --text-color-secondary: #788599;
+  --colors-graybase-gray-7: #f5f4fc
+}
+
+::selection {
+  color: #fff;
+  background: #5506be;
+}
+
+html {
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+}
+
+.sellular-side-navbar {
+  width: 240px;
+  max-width: 240px;
+  min-width: 240px;
+}
+
+.sellular-section-title {
+  font-weight: 500;
+  letter-spacing: .5px;
+  line-height: 19px;
+  color: var(--text-color-secondary);
+  margin-left: 16px;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.sellular-side-navbar .sellular-link {
+  font-size: 14px;
+  line-height: 30px;
+  font-weight: 300;
+  color: var(--text-color-secondary);
+  position: relative;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.sellular-side-navbar .sellular-link--active {
+  font-weight: 500;
+  color: var(--brand-color);
+}
+
+.sellular-side-navbar .sellular-link::before, .sellular-side-navbar .sellular-link--active.sellular-link--sub::before {
+  content: '';
+  height: 100%;
+  width: 1px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--colors-graybase-gray-7);
+}
+
+.sellular-side-navbar .sellular-link--active::before {
+  width: 2px;
+  background: var(--brand-color);
+}
+
+.sellular-input-label {
+  font-weight: 500;
+  color: var(--text-color-secondary);
+  font-size: 14px;
+  line-height: 1.5715;
+  padding-bottom: 8px;
+}
+
+.sellular-input {
+}
+
+.sellular-input--text, .sellular-input--textarea {
+  box-sizing: border-box;
+  margin: 0;
+  font-variant: tabular-nums;
+  list-style: none;
+  -webkit-font-feature-settings: "tnum","tnum";
+  font-feature-settings: "tnum","tnum";
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-width: 0;
+  padding: 6px 11px;
+  color: #212933;
+  font-size: 14px;
+  line-height: 1.5715;
+  background-color: #fff;
+  border: 1px solid #e7ecf2;
+  transition: all .3s;
+  border-radius: 0;
+}
+
+.sellular-input--text::-webkit-input-placeholder, .sellular-input--textarea::-webkit-input-placeholder {
+  color: #c5c9d0;
+  font-size: 14px;
+  line-height: 1.5715;
+  font-weight: lighter;
+}
+
+.sellular-input--text:hover, .sellular-input--textarea:hover {
+  border-color: var(--brand-color);
+  border-right-width: 1px!important;
+}
+
+.sellular-input--text:focus, .sellular-input--textarea:focus {
+  border-color: var(--brand-color);
+  border-right-width: 1px!important;
+  outline: 0;
+  box-shadow: 0 0 0 2px rgb(85 6 190 / 20%);
+}
+
+.sellular-input-leading {
+  font-size: 14px;
+  line-height: 1.5715;
+  border: 1px solid #e7ecf2;
+  border-right: 0;
+  background: #f7f7f8;
+  padding-left: 12px;
+  padding-right: 12px;
+  color: var(--text-color-secondary);
+}
+
+.sellular-input--text__inset {
+  font-size: 14px;
+  line-height: 1.5715;
+  position: absolute;
+  right: 36px;
+  top: 37px;
+}
+
+.sellular-title {
+  overflow: hidden;
+  color: #212933;
+  font-weight: 500;
+  font-size: 16px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sellular-subtitle {
+  font-size: 14px;
+  line-height: 1.5715;
+  color: var(--text-color-secondary)
+}
+
+.sellular-btn-icon {
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--text-color-secondary);
+  padding: 8px;
+}
+
+.sellular-btn-icon path {
+  fill: var(--text-color-secondary);
+}
+
+.sellular-btn-icon:hover {
+  color: var(--brand-color);
+  border: 1px solid #E7ECF2;
+  background: #F8F8FE;
+  border-radius: 2px;
+}
+
+.sellular-btn-icon:hover path {
+  fill: var(--brand-color);
+}
+
+.sellular-list-item-highlight, .sellular-list-item-highlight.sellular-list-item-highlight--disabled:hover {
+  background-color: #FFF;
+}
+
+.sellular-list li {
+  border-bottom: 1px solid #E7ECF2;
+}
+
+.sellular-list li:last-child {
+  border-bottom: none;
+}
+
+.sellular-list {
+  border: 1px solid #E7ECF2;
+}
+
+.sellular-list-item-highlight:hover {
+  background-color: #F8F8FE;
+}
+

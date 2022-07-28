@@ -761,7 +761,7 @@ const BookingPage = ({
                                 required: input.required,
                               })}
                               id={"custom_" + input.id}
-                              className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black disabled:bg-gray-200 ltr:mr-2 rtl:ml-2 disabled:dark:text-gray-500"
+                              className="border-brand text-brand focus:ring-brand h-4 w-4 rounded disabled:bg-gray-200 ltr:mr-2 rtl:ml-2 disabled:dark:text-gray-500"
                               placeholder=""
                               disabled={disabledExceptForOwner}
                             />

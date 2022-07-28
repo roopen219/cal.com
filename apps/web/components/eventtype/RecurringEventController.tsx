@@ -36,7 +36,7 @@ export default function RecurringEventController({
   return (
     <div className="block items-start sm:flex">
       <div className="min-w-48 mb-4 sm:mb-0">
-        <span className="flex text-sm font-medium text-neutral-700">{t("recurring_event")}</span>
+        <span className="sellular-input-label flex !pb-0 text-sm">{t("recurring_event")}</span>
       </div>
       <div className={!paymentEnabled ? "w-full" : ""}>
         {paymentEnabled ? (
@@ -62,14 +62,14 @@ export default function RecurringEventController({
                     }
                   }}
                   type="checkbox"
-                  className="text-primary-600  h-4 w-4 rounded border-gray-300"
+                  className="text-brand border-brand h-4 w-4 rounded"
                   defaultChecked={recurringEventState !== null}
                   data-testid="recurring-event-check"
                   id="recurringEvent"
                 />
               </div>
               <div className="text-sm ltr:ml-3 rtl:mr-3">
-                <label htmlFor="recurringEvent" className="text-neutral-900">
+                <label htmlFor="recurringEvent" className="text-gray-500">
                   {t("recurring_event_description")}
                 </label>
               </div>
@@ -77,12 +77,12 @@ export default function RecurringEventController({
             {recurringEventState && (
               <div data-testid="recurring-event-collapsible" className="mt-4 text-sm">
                 <div className="flex items-center">
-                  <p className="mr-2 text-neutral-900">{t("repeats_every")}</p>
+                  <p className="mr-2 text-neutral-500">{t("repeats_every")}</p>
                   <input
                     type="number"
                     min="1"
                     max="20"
-                    className="block w-16 rounded-sm border-gray-300 [appearance:textfield] ltr:mr-2 rtl:ml-2 sm:text-sm"
+                    className="sellular-input--text block !w-16"
                     defaultValue={recurringEventState.interval}
                     onChange={(event) => {
                       const newVal = {
@@ -109,12 +109,12 @@ export default function RecurringEventController({
                   />
                 </div>
                 <div className="mt-4 flex items-center">
-                  <p className="mr-2 text-neutral-900">{t("max")}</p>
+                  <p className="mr-2 text-neutral-500">{t("max")}</p>
                   <input
                     type="number"
                     min="1"
                     max="20"
-                    className="block w-16 rounded-sm border-gray-300 [appearance:textfield] ltr:mr-2 rtl:ml-2 sm:text-sm"
+                    className="sellular-input--text !mr-2 block !w-16"
                     defaultValue={recurringEventState.count}
                     onChange={(event) => {
                       const newVal = {
@@ -125,7 +125,7 @@ export default function RecurringEventController({
                       setRecurringEventState(newVal);
                     }}
                   />
-                  <p className="mr-2 text-neutral-900">
+                  <p className="mr-2 text-neutral-500">
                     {t("occurrence", {
                       count: recurringEventState.count,
                     })}

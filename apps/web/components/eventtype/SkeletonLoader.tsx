@@ -47,13 +47,13 @@ function SkeletonItem() {
       </div>
       <div className="mt-4 hidden flex-shrink-0 sm:mt-0 sm:ml-5 sm:flex">
         <div className="flex justify-between rtl:space-x-reverse">
-          <div className="btn-icon appearance-none">
+          <div className="sellular-btn-icon appearance-none">
             <ExternalLinkIcon className="h-5 w-5" />
           </div>
-          <div className="btn-icon appearance-none">
+          <div className="sellular-btn-icon appearance-none">
             <LinkIcon className="h-5 w-5" />
           </div>
-          <div className="btn-icon appearance-none">
+          <div className="sellular-btn-icon appearance-none">
             <DotsHorizontalIcon className="h-5 w-5" />
           </div>
         </div>

@@ -114,7 +114,7 @@ export default function MemberInvitationModal(props: MemberInvitationModalProps)
                   name="sendInviteEmail"
                   defaultChecked
                   id="sendInviteEmail"
-                  className="rounded-sm border-gray-300 text-black sm:text-sm"
+                  className="border-brand text-brand rounded-sm sm:text-sm"
                 />
               </div>
               <div className="text-sm ltr:ml-2 rtl:mr-2">

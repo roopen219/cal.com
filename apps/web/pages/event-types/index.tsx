@@ -83,7 +83,7 @@ const Item = ({ type, group, readOnly }: { type: EventType; group: EventTypeGrou
             {type.title}
           </span>
           <small
-            className="hidden text-neutral-500 sm:inline"
+            className="hidden text-gray-500 sm:inline"
             data-testid={"event-type-slug-" + type.id}>{`/${group.profile.slug}/${type.slug}`}</small>
           {type.hidden && (
             <span className="rtl:mr-2inline items-center rounded-sm bg-yellow-100 px-1.5 py-0.5 text-xs font-medium text-yellow-800 ltr:ml-2">
@@ -206,8 +206,8 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
   }, []);
 
   return (
-    <div className="-mx-4 mb-16 overflow-hidden rounded-sm border border-gray-200 bg-white sm:mx-0">
-      <ul className="divide-y divide-neutral-200" data-testid="event-types">
+    <div className="sellular-list -mx-4 mx-0 mb-16 overflow-hidden bg-white">
+      <ul data-testid="event-types">
         {types.map((type, index) => (
           <li
             key={type.id}
@@ -215,24 +215,24 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
             data-disabled={type.$disabled ? 1 : 0}>
             <div
               className={classNames(
-                "flex items-center justify-between hover:bg-neutral-50 ",
-                type.$disabled && "hover:bg-white"
+                "sellular-list-item-highlight flex items-center justify-between",
+                type.$disabled && "sellular-list-item-highlight--disabled"
               )}>
               <div
                 className={classNames(
-                  "group flex w-full items-center justify-between px-4 py-4 hover:bg-neutral-50 sm:px-6",
-                  type.$disabled && "hover:bg-white"
+                  "sellular-list-item-highlight group flex w-full items-center justify-between px-4 py-4 sm:px-6",
+                  type.$disabled && "sellular-list-item-highlight--disabled"
                 )}>
                 {types.length > 1 && !type.$disabled && (
                   <>
                     <button
-                      className="invisible absolute left-1/2 -mt-4 mb-4 -ml-4 hidden h-7 w-7 scale-0 rounded-full border bg-white p-1 text-gray-400 transition-all hover:border-transparent hover:text-black hover:shadow group-hover:visible group-hover:scale-100 sm:left-[19px] sm:ml-0 sm:block"
+                      className="invisible absolute left-1/2 -mt-4 mb-4 -ml-4 hidden h-7 w-7 scale-0 rounded-full border bg-white p-1 text-gray-500 transition-all hover:border-transparent hover:text-black hover:shadow group-hover:visible group-hover:scale-100 sm:left-[19px] sm:ml-0 sm:block"
                       onClick={() => moveEventType(index, -1)}>
                       <ArrowUpIcon />
                     </button>
 
                     <button
-                      className="invisible absolute left-1/2 mt-8 -ml-4 hidden h-7 w-7 scale-0 rounded-full border bg-white p-1 text-gray-400 transition-all hover:border-transparent hover:text-black hover:shadow group-hover:visible group-hover:scale-100 sm:left-[19px] sm:ml-0 sm:block"
+                      className="invisible absolute left-1/2 mt-8 -ml-4 hidden h-7 w-7 scale-0 rounded-full border bg-white p-1 text-gray-500 transition-all hover:border-transparent hover:text-black hover:shadow group-hover:visible group-hover:scale-100 sm:left-[19px] sm:ml-0 sm:block"
                       onClick={() => moveEventType(index, 1)}>
                       <ArrowDownIcon />
                     </button>
@@ -264,7 +264,10 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
                           href={`${CAL_URL}/${group.profile.slug}/${type.slug}`}
                           target="_blank"
                           rel="noreferrer"
-                          className={classNames("btn-icon appearance-none", type.$disabled && " opacity-30")}>
+                          className={classNames(
+                            "sellular-btn-icon appearance-none",
+                            type.$disabled && " opacity-30"
+                          )}>
                           <ExternalLinkIcon
                             className={classNames("h-5 w-5", !type.$disabled && "group-hover:text-black")}
                           />
@@ -277,7 +280,7 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
                             showToast(t("link_copied"), "success");
                             navigator.clipboard.writeText(`${CAL_URL}/${group.profile.slug}/${type.slug}`);
                           }}
-                          className={classNames("btn-icon", type.$disabled && " opacity-30")}>
+                          className={classNames("sellular-btn-icon", type.$disabled && " opacity-30")}>
                           <LinkIcon
                             className={classNames("h-5 w-5", !type.$disabled && "group-hover:text-black")}
                           />
@@ -286,7 +289,7 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
                     </div>
                     <Dropdown>
                       <DropdownMenuTrigger
-                        className="h-10 w-10 cursor-pointer rounded-sm border border-transparent text-neutral-500 hover:border-gray-300 hover:text-neutral-900 focus:border-gray-300"
+                        className="sellular-btn-icon"
                         data-testid={"event-type-options-" + type.id}>
                         <DotsHorizontalIcon className="h-5 w-5 group-hover:text-gray-800" />
                       </DropdownMenuTrigger>
@@ -540,7 +543,7 @@ const EventTypesPage = () => {
   return (
     <div>
       <Head>
-        <title>Home | Cal.com</title>
+        <title>Home | Sellular</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Shell

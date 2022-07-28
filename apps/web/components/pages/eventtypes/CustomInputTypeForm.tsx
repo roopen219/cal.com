@@ -43,8 +43,8 @@ const CustomInputTypeForm: FC<Props> = (props) => {
 
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
-      <div className="mb-2">
-        <label htmlFor="type" className="block text-sm font-medium text-gray-700">
+      <div className="mb-4">
+        <label htmlFor="type" className="sellular-input-label block">
           {t("input_type")}
         </label>
         <Controller
@@ -65,8 +65,8 @@ const CustomInputTypeForm: FC<Props> = (props) => {
           )}
         />
       </div>
-      <div className="mb-2">
-        <label htmlFor="label" className="block text-sm font-medium text-gray-700">
+      <div className="mb-4">
+        <label htmlFor="label" className="sellular-input-label block">
           {t("label")}
         </label>
         <div className="mt-1">
@@ -74,7 +74,7 @@ const CustomInputTypeForm: FC<Props> = (props) => {
             type="text"
             id="label"
             required
-            className="block w-full rounded-sm border-gray-300 text-sm"
+            className="sellular-input--text block w-full"
             defaultValue={selectedCustomInput?.label}
             {...register("label", { required: true })}
           />
@@ -82,15 +82,15 @@ const CustomInputTypeForm: FC<Props> = (props) => {
       </div>
       {(selectedInputType === EventTypeCustomInputType.TEXT ||
         selectedInputType === EventTypeCustomInputType.TEXTLONG) && (
-        <div className="mb-2">
-          <label htmlFor="placeholder" className="block text-sm font-medium text-gray-700">
+        <div className="mb-4">
+          <label htmlFor="placeholder" className="sellular-input-label block">
             {t("placeholder")}
           </label>
           <div className="mt-1">
             <input
               type="text"
               id="placeholder"
-              className="block w-full rounded-sm border-gray-300 text-sm"
+              className="sellular-input--text block w-full"
               defaultValue={selectedCustomInput?.placeholder}
               {...register("placeholder")}
             />
@@ -101,11 +101,11 @@ const CustomInputTypeForm: FC<Props> = (props) => {
         <input
           id="required"
           type="checkbox"
-          className="text-primary-600 focus:ring-primary-500 h-4 w-4 rounded border-gray-300 ltr:mr-2 rtl:ml-2"
+          className="text-brand focus:ring-brand border-brand h-4 w-4 rounded ltr:mr-2 rtl:ml-2"
           defaultChecked={selectedCustomInput?.required ?? true}
           {...register("required")}
         />
-        <label htmlFor="required" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="required" className="block text-sm font-medium text-gray-500">
           {t("is_required")}
         </label>
       </div>
@@ -121,7 +121,7 @@ const CustomInputTypeForm: FC<Props> = (props) => {
         value={selectedCustomInput?.id || -1}
         {...register("id", { valueAsNumber: true })}
       />
-      <div className="mt-5 flex space-x-2 sm:mt-4">
+      <div className="mt-5 flex space-x-2 sm:mt-5">
         <Button onClick={onCancel} type="button" color="secondary" className="ltr:mr-2">
           {t("cancel")}
         </Button>

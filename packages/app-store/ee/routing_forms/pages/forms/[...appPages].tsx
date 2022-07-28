@@ -154,7 +154,7 @@ export default function RoutingForms({
                                   target="_blank"
                                   rel="noreferrer"
                                   className={classNames(
-                                    "btn-icon appearance-none",
+                                    "sellular-btn-icon appearance-none",
                                     disabled && " opacity-30"
                                   )}>
                                   <ExternalLinkIcon
@@ -169,7 +169,7 @@ export default function RoutingForms({
                                     showToast(t("link_copied"), "success");
                                     navigator.clipboard.writeText(formLink);
                                   }}
-                                  className={classNames("btn-icon", disabled && " opacity-30")}>
+                                  className={classNames("sellular-btn-icon", disabled && " opacity-30")}>
                                   <LinkIcon
                                     className={classNames("h-5 w-5", !disabled && "group-hover:text-black")}
                                   />

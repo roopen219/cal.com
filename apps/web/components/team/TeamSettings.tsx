@@ -187,7 +187,7 @@ export default function TeamSettings(props: Props) {
                       type="checkbox"
                       ref={hideBrandingRef}
                       defaultChecked={team?.hideBranding}
-                      className="h-4 w-4 rounded-sm border-gray-300 text-neutral-900 focus:ring-neutral-500"
+                      className="border-brand text-brand focus:ring-brand h-4 w-4 rounded-sm"
                     />
                   </div>
                   <div className="text-sm ltr:ml-3 rtl:mr-3">

@@ -177,7 +177,7 @@ const CopyTimes = ({ disabled, onApply }: { disabled: number[]; onApply: (select
                   }
                 }}
                 type="checkbox"
-                className="inline-block rounded-sm border-gray-300 text-neutral-900 focus:ring-neutral-500 disabled:text-neutral-400"
+                className="border-brand text-brand focus:ring-brand inline-block rounded-sm disabled:text-neutral-400"
               />
             </label>
           </li>
@@ -301,7 +301,7 @@ const ScheduleBlock = ({ name, day, weekday }: ScheduleBlockProps) => {
             onChange={(e) => {
               form.setValue(`${name}.${day}`, e.target.checked ? [defaultDayRange] : []);
             }}
-            className="inline-block rounded-sm border-gray-300 text-neutral-900 focus:ring-neutral-500"
+            className="border-brand text-brand focus:ring-brand inline-block rounded-sm"
           />
           <span className="ml-2 inline-block text-sm capitalize">{weekday}</span>
         </div>

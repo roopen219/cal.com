@@ -177,11 +177,11 @@ export default function CreateEventTypeButton(props: Props) {
 
       <DialogContent className="overflow-y-auto">
         <div className="mb-4">
-          <h3 className="text-lg font-bold leading-6 text-gray-900" id="modal-title">
+          <h3 className="sellular-title" id="modal-title">
             {teamId ? t("add_new_team_event_type") : t("add_new_event_type")}
           </h3>
           <div>
-            <p className="text-sm text-gray-500">{t("new_event_type_to_book_description")}</p>
+            <p className="sellular-subtitle">{t("new_event_type_to_book_description")}</p>
           </div>
         </div>
         <Form
@@ -237,9 +237,7 @@ export default function CreateEventTypeButton(props: Props) {
                 className="pr-20"
                 {...register("length", { valueAsNumber: true })}
               />
-              <div className="absolute inset-y-0 right-0 mt-1.5 flex items-center pt-4 pr-3 text-sm text-gray-400">
-                {t("minutes")}
-              </div>
+              <div className="sellular-input--text__inset">{t("minutes")}</div>
             </div>
 
             {teamId && (

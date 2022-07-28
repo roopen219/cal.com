@@ -157,7 +157,7 @@ const SuccessRedirectEdit = <T extends UseFormReturn<FormValues>>({
         <div className="min-w-48 sm:mb-0">
           <label
             htmlFor="successRedirectUrl"
-            className="flex h-full items-center text-sm font-medium text-neutral-700">
+            className="sellular-input-label mb-0 flex h-full items-center !pb-0">
             {t("redirect_success_booking")}
             <span className="ml-1">{proUpgradeRequired && <Badge variant="default">PRO</Badge>}</span>
           </label>
@@ -173,7 +173,7 @@ const SuccessRedirectEdit = <T extends UseFormReturn<FormValues>>({
             }}
             readOnly={proUpgradeRequired}
             type="url"
-            className="block w-full rounded-sm border-gray-300 sm:text-sm"
+            className="sellular-input sellular-input--text"
             placeholder={t("external_redirect_url")}
             defaultValue={eventType.successRedirectUrl || ""}
             {...formMethods.register("successRedirectUrl")}
@@ -918,17 +918,14 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                   <div className="space-y-3">
                     <div className="block items-center sm:flex">
                       <div className="min-w-48 mb-4 sm:mb-0">
-                        <label
-                          id="slug-label"
-                          htmlFor="slug"
-                          className="flex text-sm font-medium text-neutral-700">
+                        <label id="slug-label" htmlFor="slug" className="sellular-input-label flex !pb-0">
                           <LinkIcon className="mt-0.5 h-4 w-4 text-neutral-500 ltr:mr-2 rtl:ml-2" />
                           {t("url")}
                         </label>
                       </div>
                       <div className="w-full">
                         <div className="flex rounded-sm">
-                          <span className="inline-flex items-center rounded-l-sm border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+                          <span className="sellular-input-leading inline-flex items-center">
                             {CAL_URL?.replace(/^(https?:|)\/\//, "")}/
                             {team ? "team/" + team.slug : eventType.users[0].username}/
                           </span>
@@ -937,7 +934,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                             id="slug"
                             aria-labelledby="slug-label"
                             required
-                            className="block w-full min-w-0 flex-1 rounded-none rounded-r-sm border-gray-300 sm:text-sm"
+                            className="sellular-input sellular-input--text block w-full min-w-0 flex-1"
                             defaultValue={eventType.slug}
                             {...formMethods.register("slug", {
                               setValueAs: (v) => slugify(v),
@@ -974,9 +971,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                   <div className="space-y-3">
                     <div className="block sm:flex">
                       <div className="min-w-48 sm:mb-0">
-                        <label
-                          htmlFor="location"
-                          className="mt-2.5 flex text-sm font-medium text-neutral-700">
+                        <label htmlFor="location" className="sellular-input-label mt-2.5 flex !pb-0">
                           <LocationMarkerIcon className="mt-0.5 mb-4 h-4 w-4 text-neutral-500 ltr:mr-2 rtl:ml-2" />
                           {t("location")}
                         </label>
@@ -993,9 +988,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                   <div className="space-y-3">
                     <div className="block sm:flex">
                       <div className="min-w-48 mb-4 mt-2.5 sm:mb-0">
-                        <label
-                          htmlFor="description"
-                          className="mt-0 flex text-sm font-medium text-neutral-700">
+                        <label htmlFor="description" className="sellular-input-label mt-0 flex !pb-0">
                           <DocumentIcon className="mt-0.5 h-4 w-4 text-neutral-500 ltr:mr-2 rtl:ml-2" />
                           {t("description")}
                         </label>
@@ -1003,7 +996,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                       <div className="w-full">
                         <textarea
                           id="description"
-                          className="block w-full rounded-sm border-gray-300 text-sm "
+                          className="sellular-input--textarea block w-full"
                           placeholder={t("quick_video_meeting")}
                           {...formMethods.register("description")}
                           defaultValue={asStringOrUndefined(eventType.description)}
@@ -1016,9 +1009,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                   <div className="space-y-3">
                     <div className="block sm:flex">
                       <div className="min-w-48 mb-4 mt-2.5 sm:mb-0">
-                        <label
-                          htmlFor="availability"
-                          className="mt-0 flex text-sm font-medium text-neutral-700">
+                        <label htmlFor="availability" className="sellular-input-label mt-0 flex">
                           <ClockIcon className="mt-0.5 h-4 w-4 text-neutral-500 ltr:mr-2 rtl:ml-2" />
                           {t("availability")} <InfoBadge content={t("you_can_manage_your_schedules")} />
                         </label>
@@ -1114,7 +1105,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                             advancedSettingsVisible ? "rotate-90 transform" : ""
                           } ml-auto h-5 w-5 text-neutral-500`}
                         />
-                        <span className="text-sm font-medium text-neutral-700">
+                        <span className="text-sm font-medium text-neutral-900">
                           {t("show_advanced_settings")}
                         </span>
                       </CollapsibleTrigger>
@@ -1153,7 +1144,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                         )}
                         <div className="block items-center sm:flex">
                           <div className="min-w-48 mb-4 sm:mb-0">
-                            <label htmlFor="eventName" className="flex text-sm font-medium text-neutral-700">
+                            <label htmlFor="eventName" className="sellular-input-label flex !pb-0 text-sm">
                               {t("event_name")} <InfoBadge content={t("event_name_tooltip")} />
                             </label>
                           </div>
@@ -1161,7 +1152,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                             <div className="relative mt-1 rounded-sm">
                               <input
                                 type="text"
-                                className="block w-full rounded-sm border-gray-300 text-sm "
+                                className="sellular-input sellular-input--text block w-full"
                                 placeholder={t("meeting_with_user")}
                                 defaultValue={eventType.eventName || ""}
                                 onFocus={() => setDisplayNameTips(true)}
@@ -1206,7 +1197,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                           <div className="min-w-48 mb-4 sm:mb-0">
                             <label
                               htmlFor="additionalFields"
-                              className="flexflex mt-2 text-sm font-medium text-neutral-700">
+                              className="flexflex sellular-input-label mt-2 !pb-0">
                               {t("additional_inputs")}
                             </label>
                           </div>
@@ -1429,7 +1420,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
 
                         <div className="block items-center sm:flex">
                           <div className="min-w-48 mb-4 sm:mb-0">
-                            <label htmlFor="eventName" className="flex text-sm font-medium text-neutral-700">
+                            <label htmlFor="eventName" className="sellular-input-label flex !pb-0">
                               {t("slot_interval")}
                             </label>
                           </div>
@@ -1474,7 +1465,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                           <div className="min-w-48 mb-4 sm:mb-0">
                             <label
                               htmlFor="inviteesCanSchedule"
-                              className="mt-2.5 flex text-sm font-medium text-neutral-700">
+                              className="sellular-input-label mt-2.5 flex !pb-0">
                               {t("invitees_can_schedule")}
                             </label>
                           </div>
@@ -1494,22 +1485,24 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                                       <RadioGroup.Item
                                         id={period.type}
                                         value={period.type}
-                                        className="min-w-4 flex h-4 w-4 cursor-pointer items-center rounded-full border border-black bg-white focus:border-2 focus:outline-none ltr:mr-2 rtl:ml-2">
-                                        <RadioGroup.Indicator className="relative flex h-4 w-4 items-center justify-center after:block after:h-2 after:w-2 after:rounded-full after:bg-black" />
+                                        className="min-w-4 border-brand flex h-4 w-4 cursor-pointer items-center rounded-full border bg-white focus:border-2 focus:outline-none ltr:mr-2 rtl:ml-2">
+                                        <RadioGroup.Indicator className="after:bg-brand relative flex h-4 w-4 items-center justify-center after:block after:h-2 after:w-2 after:rounded-full" />
                                       </RadioGroup.Item>
-                                      {period.prefix ? <span>{period.prefix}&nbsp;</span> : null}
+                                      {period.prefix ? (
+                                        <span className="text-gray-500">{period.prefix}&nbsp;</span>
+                                      ) : null}
                                       {period.type === "ROLLING" && (
                                         <div className="inline-flex">
                                           <input
                                             type="number"
-                                            className="block w-16 rounded-sm border-gray-300 [appearance:textfield] ltr:mr-2 rtl:ml-2 sm:text-sm"
+                                            className="sellular-input sellular-input--text block w-16 !border-r-0"
                                             placeholder="30"
                                             {...formMethods.register("periodDays", { valueAsNumber: true })}
                                             defaultValue={eventType.periodDays || 30}
                                           />
                                           <select
                                             id=""
-                                            className="block w-full rounded-sm border-gray-300 py-2 pl-3 pr-10 text-base focus:outline-none sm:text-sm"
+                                            className="sellular-input sellular-input--text block w-full"
                                             {...formMethods.register("periodCountCalendarDays")}
                                             defaultValue={eventType.periodCountCalendarDays ? "1" : "0"}>
                                             <option value="1">{t("calendar_days")}</option>
@@ -1539,7 +1532,9 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                                         </div>
                                       )}
                                       {period.suffix ? (
-                                        <span className="ltr:ml-2 rtl:mr-2">&nbsp;{period.suffix}</span>
+                                        <span className="text-gray-500 ltr:ml-2 rtl:mr-2">
+                                          &nbsp;{period.suffix}
+                                        </span>
                                       ) : null}
                                     </div>
                                   ))}
@@ -1551,18 +1546,14 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                         <hr className="border-neutral-200" />
                         <div className="block sm:flex">
                           <div className="min-w-48 mb-4 sm:mb-0">
-                            <label
-                              htmlFor="bufferTime"
-                              className="mt-2.5 flex text-sm font-medium text-neutral-700">
+                            <label htmlFor="bufferTime" className="sellular-input-label mt-2.5 flex !pb-0">
                               {t("buffer_time")}
                             </label>
                           </div>
                           <div className="w-full">
                             <div className="inline-flex w-full space-x-2">
                               <div className="w-full">
-                                <label
-                                  htmlFor="beforeBufferTime"
-                                  className="mb-2 flex text-sm font-medium text-neutral-700">
+                                <label htmlFor="beforeBufferTime" className="sellular-input-label mb-2 flex">
                                   {t("before_event")}
                                 </label>
                                 <Controller
@@ -1598,9 +1589,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                                 />
                               </div>
                               <div className="w-full">
-                                <label
-                                  htmlFor="afterBufferTime"
-                                  className="mb-2 flex text-sm font-medium text-neutral-700">
+                                <label htmlFor="afterBufferTime" className="sellular-input-label mb-2 flex">
                                   {t("after_event")}
                                 </label>
                                 <Controller
@@ -1710,12 +1699,12 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                                                   <div className="flex-auto">
                                                     <label
                                                       htmlFor="beforeBufferTime"
-                                                      className="mb-2 flex text-sm font-medium text-neutral-700">
+                                                      className="sellular-input-label my-2 flex">
                                                       {t("enter_number_of_seats")}
                                                     </label>
                                                     <input
                                                       type="number"
-                                                      className="focus:border-primary-500 focus:ring-primary-500 py- block  w-20 rounded-sm border-gray-300 [appearance:textfield] ltr:mr-2 rtl:ml-2 sm:text-sm"
+                                                      className="sellular-input--text !w-16"
                                                       placeholder={`${defaultSeatsPro}`}
                                                       min={minSeats}
                                                       {...formMethods.register("seatsPerTimeSlot", {
@@ -1803,7 +1792,7 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                                               id="requirePayment"
                                               name="requirePayment"
                                               type="checkbox"
-                                              className="text-primary-600 h-4 w-4 rounded border-gray-300"
+                                              className="text-brand border-brand h-4 w-4 rounded"
                                               defaultChecked={requirePayment}
                                             />
                                           </div>
@@ -2018,13 +2007,11 @@ const EventTypePage = (props: inferSSRProps<typeof getServerSideProps>) => {
                         <PlusIcon className="text-primary-600 h-6 w-6" />
                       </div>
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 className="text-lg font-medium leading-6 text-gray-900" id="modal-title">
+                        <h3 className="sellular-title" id="modal-title">
                           {t("add_new_custom_input_field")}
                         </h3>
                         <div>
-                          <p className="text-sm text-gray-400">
-                            {t("this_input_will_shown_booking_this_event")}
-                          </p>
+                          <p className="sellular-subtitle">{t("this_input_will_shown_booking_this_event")}</p>
                         </div>
                       </div>
                     </div>

@@ -16,17 +16,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
     <input
       {...props}
       ref={ref}
-      className={classNames(
-        "mt-1 block w-full rounded-sm border border-gray-300 py-2 px-3 shadow-sm focus:border-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-800 sm:text-sm",
-        props.className
-      )}
+      className={classNames("sellular-input sellular-input--text mt-1 block w-full", props.className)}
     />
   );
 });
 
 export function Label(props: JSX.IntrinsicElements["label"]) {
   return (
-    <label {...props} className={classNames("block text-sm font-medium text-gray-700", props.className)}>
+    <label {...props} className={classNames("sellular-input-label block", props.className)}>
       {props.children}
     </label>
   );
@@ -34,7 +31,7 @@ export function Label(props: JSX.IntrinsicElements["label"]) {
 
 export function InputLeading(props: JSX.IntrinsicElements["div"]) {
   return (
-    <span className="inline-flex items-center flex-shrink-0 px-3 text-gray-500 border border-r-0 border-gray-300 rounded-l-sm bg-gray-50 sm:text-sm">
+    <span className="sellular-input-leading inline-flex flex-shrink-0 items-center bg-gray-50 px-3 text-gray-500">
       {props.children}
     </span>
   );
@@ -71,7 +68,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(function InputF
         </Label>
       )}
       {addOnLeading ? (
-        <div className="flex mt-1 rounded-md shadow-sm">
+        <div className="mt-1 flex">
           {addOnLeading}
           <Input
             id={id}
@@ -138,10 +135,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
     <textarea
       ref={ref}
       {...props}
-      className={classNames(
-        "block w-full rounded-sm border-gray-300 shadow-sm focus:border-neutral-900 focus:ring-neutral-900 sm:text-sm",
-        props.className
-      )}
+      className={classNames("sellular-input sellular-input--textarea block w-full", props.className)}
     />
   );
 });

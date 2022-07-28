@@ -152,21 +152,21 @@ const Layout = ({
       icon: ClockIcon,
       current: router.asPath.startsWith("/availability"),
     },
-    routingForms
-      ? {
-          name: "Routing Forms",
-          href: "/apps/routing_forms/forms",
-          icon: CollectionIcon,
-          current: router.asPath.startsWith("/apps/routing_forms/"),
-        }
-      : null,
-    {
-      name: t("workflows"),
-      href: "/workflows",
-      icon: LightningBoltIcon,
-      current: router.asPath.startsWith("/workflows"),
-      pro: true,
-    },
+    // routingForms
+    //   ? {
+    //       name: "Routing Forms",
+    //       href: "/apps/routing_forms/forms",
+    //       icon: CollectionIcon,
+    //       current: router.asPath.startsWith("/apps/routing_forms/"),
+    //     }
+    //   : null,
+    // {
+    //   name: t("workflows"),
+    //   href: "/workflows",
+    //   icon: LightningBoltIcon,
+    //   current: router.asPath.startsWith("/workflows"),
+    //   pro: true,
+    // },
     {
       name: t("apps"),
       href: "/apps",
@@ -185,12 +185,12 @@ const Layout = ({
         },
       ],
     },
-    {
-      name: t("settings"),
-      href: "/settings/profile",
-      icon: CogIcon,
-      current: router.asPath.startsWith("/settings"),
-    },
+    // {
+    //   name: t("settings"),
+    //   href: "/settings/profile",
+    //   icon: CogIcon,
+    //   current: router.asPath.startsWith("/settings"),
+    // },
   ];
   const pageTitle = typeof props.heading === "string" ? props.heading : props.title;
 
@@ -208,31 +208,14 @@ const Layout = ({
         <Toaster position="bottom-right" />
       </div>
 
-      <div
-        className={classNames("flex h-screen overflow-hidden", props.large ? "bg-white" : "bg-gray-100")}
-        data-testid="dashboard-shell">
+      <div className="flex h-screen overflow-hidden bg-white" data-testid="dashboard-shell">
         {status === "authenticated" && (
-          <div style={isEmbed ? { display: "none" } : {}} className="hidden md:flex lg:flex-shrink-0">
-            <div className="flex w-14 flex-col lg:w-56">
-              <div className="flex h-0 flex-1 flex-col border-r border-gray-200 bg-white">
-                <div className="flex flex-1 flex-col overflow-y-auto pt-3 pb-4 lg:pt-5">
-                  <div className="justify-between md:hidden lg:flex">
-                    <Link href="/event-types">
-                      <a className="px-4">
-                        <Logo small />
-                      </a>
-                    </Link>
-                    <div className="px-2">
-                      <KBarTrigger />
-                    </div>
-                  </div>
-                  {/* logo icon for tablet */}
-                  <Link href="/event-types">
-                    <a className="text-center md:inline lg:hidden">
-                      <Logo small icon />
-                    </a>
-                  </Link>
-                  <nav className="mt-2 flex-1 space-y-1 bg-white px-2 lg:mt-5">
+          <div style={isEmbed ? { display: "none" } : {}} className="flex flex-shrink-0">
+            <div className="sellular-side-navbar flex flex-col">
+              <div className="shadow-navbar flex h-0 flex-1 flex-col bg-white">
+                <div className="sellular-section-title">CALENDAR</div>
+                <div className="flex flex-1 flex-col overflow-y-auto pb-4">
+                  <nav className="mt-8 flex-1 bg-white pl-4">
                     {navigation.map((item) =>
                       !item ? null : (
                         <Fragment key={item.name}>
@@ -240,26 +223,10 @@ const Layout = ({
                             <a
                               aria-label={item.name}
                               className={classNames(
-                                item.current
-                                  ? "bg-neutral-100 text-neutral-900"
-                                  : "text-neutral-500 hover:bg-gray-50 hover:text-neutral-900",
-                                "group flex items-center rounded-sm px-2 py-2 text-sm font-medium"
+                                item.current && "sellular-link--active",
+                                "sellular-link group flex items-center px-4"
                               )}>
-                              <item.icon
-                                className={classNames(
-                                  item.current
-                                    ? "text-neutral-500"
-                                    : "text-neutral-400 group-hover:text-neutral-500",
-                                  "h-5 w-5 flex-shrink-0 ltr:mr-3 rtl:ml-3"
-                                )}
-                                aria-hidden="true"
-                              />
-                              <span className="hidden lg:inline">{item.name}</span>
-                              {item.pro && (
-                                <span className="ml-1">
-                                  {plan === "FREE" && <Badge variant="default">PRO</Badge>}
-                                </span>
-                              )}
+                              <span className="inline">{item.name}</span>
                             </a>
                           </Link>
                           {item.child &&
@@ -269,12 +236,10 @@ const Layout = ({
                                 <Link key={item.name} href={item.href}>
                                   <a
                                     className={classNames(
-                                      item.current
-                                        ? "text-neutral-900"
-                                        : "text-neutral-500 hover:text-neutral-900",
-                                      "group hidden items-center rounded-sm px-2 py-2 pl-10 text-sm font-medium lg:flex"
+                                      item.current && "sellular-link--active",
+                                      "sellular-link sellular-link--sub group flex items-center px-4 pl-8"
                                     )}>
-                                    <span className="hidden lg:inline">{item.name}</span>
+                                    <span className="inline">{item.name}</span>
                                   </a>
                                 </Link>
                               );
@@ -282,12 +247,8 @@ const Layout = ({
                         </Fragment>
                       )
                     )}
-                    <span className="group flex items-center rounded-sm px-2 py-2 text-sm font-medium text-neutral-500 hover:bg-gray-50 hover:text-neutral-900 lg:hidden">
-                      <KBarTrigger />
-                    </span>
                   </nav>
                 </div>
-                <TrialBanner />
                 <div
                   className="rounded-sm pt-2 pb-2 pl-3 pr-2 hover:bg-gray-100 lg:mx-2 lg:pl-2"
                   data-testid="user-dropdown-trigger">
@@ -298,13 +259,6 @@ const Layout = ({
                     <UserDropdown small />
                   </span>
                 </div>
-                <small style={{ fontSize: "0.5rem" }} className="mx-3 mt-1 mb-2 hidden opacity-50 lg:block">
-                  &copy; {new Date().getFullYear()} Cal.com, Inc. v.{pkg.version + "-"}
-                  {process.env.NEXT_PUBLIC_WEBSITE_URL === "https://cal.com" ? "h" : "sh"}
-                  <span className="lowercase" data-testid={`plan-${plan?.toLowerCase()}`}>
-                    -{plan}
-                  </span>
-                </small>
               </div>
             </div>
           </div>
@@ -375,10 +329,8 @@ const Layout = ({
                       </>
                     ) : (
                       <>
-                        <h1 className="font-cal mb-1 text-xl font-bold capitalize tracking-wide text-gray-900">
-                          {props.heading}
-                        </h1>
-                        <p className="text-sm text-neutral-500 ltr:mr-4 rtl:ml-4">{props.subtitle}</p>
+                        <h1 className="sellular-title">{props.heading}</h1>
+                        <p className="sellular-subtitle">{props.subtitle}</p>
                       </>
                     )}
                   </div>
