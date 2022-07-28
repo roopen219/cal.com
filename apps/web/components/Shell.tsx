@@ -167,24 +167,24 @@ const Layout = ({
     //   current: router.asPath.startsWith("/workflows"),
     //   pro: true,
     // },
-    {
-      name: t("apps"),
-      href: "/apps",
-      icon: ViewGridIcon,
-      current: router.asPath.startsWith("/apps") && !router.asPath.startsWith("/apps/routing_forms/"),
-      child: [
-        {
-          name: t("app_store"),
-          href: "/apps",
-          current: router.asPath === "/apps",
-        },
-        {
-          name: t("installed_apps"),
-          href: "/apps/installed",
-          current: router.asPath === "/apps/installed",
-        },
-      ],
-    },
+    // {
+    //   name: t("apps"),
+    //   href: "/apps",
+    //   icon: ViewGridIcon,
+    //   current: router.asPath.startsWith("/apps") && !router.asPath.startsWith("/apps/routing_forms/"),
+    //   child: [
+    //     {
+    //       name: t("app_store"),
+    //       href: "/apps",
+    //       current: router.asPath === "/apps",
+    //     },
+    //     {
+    //       name: t("installed_apps"),
+    //       href: "/apps/installed",
+    //       current: router.asPath === "/apps/installed",
+    //     },
+    //   ],
+    // },
     // {
     //   name: t("settings"),
     //   href: "/settings/profile",
@@ -248,16 +248,6 @@ const Layout = ({
                       )
                     )}
                   </nav>
-                </div>
-                <div
-                  className="rounded-sm pt-2 pb-2 pl-3 pr-2 hover:bg-gray-100 lg:mx-2 lg:pl-2"
-                  data-testid="user-dropdown-trigger">
-                  <span className="hidden lg:inline">
-                    <UserDropdown />
-                  </span>
-                  <span className="hidden md:inline lg:hidden">
-                    <UserDropdown small />
-                  </span>
                 </div>
               </div>
             </div>
@@ -383,7 +373,6 @@ const Layout = ({
               {/* add padding to content for mobile navigation*/}
               <div className="block pt-12 md:hidden" />
             </div>
-            <LicenseBanner />
           </main>
         </div>
       </div>
