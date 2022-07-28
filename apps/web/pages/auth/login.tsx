@@ -70,7 +70,7 @@ export default function Login({ csrfToken }: inferSSRProps<typeof getServerSideP
     });
   }, [token, callbackUrl, router, setErrorMessage, telemetry, errorMessages]);
 
-  return <div>{errorMessage ? errorMessage : "Logging you in..."}</div>;
+  return <div>{errorMessage ? errorMessage : ""}</div>;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
