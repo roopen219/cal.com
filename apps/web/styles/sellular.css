@@ -2,7 +2,9 @@
 
 :root {
   --text-color-secondary: #788599;
-  --colors-graybase-gray-7: #f5f4fc
+  --colors-graybase-gray-7: #f5f4fc;
+  --booking-light-color: #788599;
+  --booking-highlight-color: #788599;
 }
 
 ::selection {
@@ -186,5 +188,9 @@ html {
 
 .sellular-list-item-highlight:hover {
   background-color: #F8F8FE;
+}
+
+button[role="switch"][data-state="checked"] {
+  background: var(--brand-color);
 }
 

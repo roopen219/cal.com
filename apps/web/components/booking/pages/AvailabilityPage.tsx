@@ -391,8 +391,8 @@ const AvailabilityPage = ({ profile, eventType }: Props) => {
           <div
             style={availabilityDatePickerEmbedStyles}
             className={classNames(
-              isBackgroundTransparent ? "" : "bg-white dark:bg-gray-800 sm:dark:border-gray-600",
-              "border-bookinglightest rounded-md md:border",
+              isBackgroundTransparent ? "" : "bg-white dark:bg-gray-500",
+              "border-bookinglightest rounded-md shadow-sm",
               isEmbed ? "mx-auto" : maxWidth
             )}>
             {/* mobile: details */}
@@ -493,7 +493,7 @@ const AvailabilityPage = ({ profile, eventType }: Props) => {
                               type="number"
                               min="1"
                               max={eventType.recurringEvent.count}
-                              className="w-15 h-7 rounded-sm border-gray-300 bg-white text-gray-600 [appearance:textfield] ltr:mr-2 rtl:ml-2 dark:border-gray-500 dark:bg-gray-600 dark:text-white sm:text-sm"
+                              className="w-15 sellular-input--text h-7"
                               defaultValue={eventType.recurringEvent.count}
                               onChange={(event) => {
                                 setRecurringEventCount(parseInt(event?.target.value));
@@ -624,7 +624,7 @@ const AvailabilityPage = ({ profile, eventType }: Props) => {
                           type="number"
                           min="1"
                           max={eventType.recurringEvent.count}
-                          className="w-15 h-7 rounded-sm border-gray-300 bg-white text-gray-600 [appearance:textfield] ltr:mr-2 rtl:ml-2 dark:border-gray-500 dark:bg-gray-600 dark:text-white sm:text-sm"
+                          className="w-15 sellular-input--text h-7"
                           defaultValue={eventType.recurringEvent.count}
                           onChange={(event) => {
                             setRecurringEventCount(parseInt(event?.target.value));
@@ -685,7 +685,6 @@ const AvailabilityPage = ({ profile, eventType }: Props) => {
               />
             </div>
           </div>
-          {(!eventType.users[0] || !isBrandingHidden(eventType.users[0])) && !isEmbed && <PoweredByCal />}
         </main>
       </div>
     </>

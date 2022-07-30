@@ -1,7 +1,7 @@
 import { IdentityProvider } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { hashPassword } from "@lib/auth";
+import verifyAdminToken from "@lib/auth/verifyAdminToken";
 import prisma from "@lib/prisma";
 import slugify from "@lib/slugify";
 
@@ -10,10 +10,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
+  try {
+    await verifyAdminToken(req);
+  } catch (err) {
+    res.status(422).json({ message: (err as Error).message });
+  }
+
   const data = req.body;
-  const { email, password } = data;
-  const username = slugify(data.username);
-  const userEmail = email.toLowerCase();
+  const { email } = data;
+  const username = slugify(data.username || "");
+  const userEmail = email?.toLowerCase() || "";
 
   if (!username) {
     res.status(422).json({ message: "Invalid username" });
@@ -22,11 +28,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!userEmail || !userEmail.includes("@")) {
     res.status(422).json({ message: "Invalid email" });
-    return;
-  }
-
-  if (!password || password.trim().length < 7) {
-    res.status(422).json({ message: "Invalid input - password should be at least 7 characters long." });
     return;
   }
 
@@ -50,21 +51,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(409).json({ message });
   }
 
-  const hashedPassword = await hashPassword(password);
-
   const user = await prisma.user.upsert({
     where: { email: userEmail },
     update: {
       username,
-      password: hashedPassword,
       emailVerified: new Date(Date.now()),
       identityProvider: IdentityProvider.CAL,
     },
     create: {
       username,
       email: userEmail,
-      password: hashedPassword,
+      emailVerified: new Date(Date.now()),
       identityProvider: IdentityProvider.CAL,
+      completedOnboarding: true,
+      hideBranding: true,
+      plan: "PRO",
     },
   });
 
@@ -80,5 +81,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
-  res.status(201).json({ message: "Created user" });
+  res.status(201).json({ message: "Created user", user });
 }

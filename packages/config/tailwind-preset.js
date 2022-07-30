@@ -6,7 +6,7 @@ module.exports = {
     "./ee/components/**/*.{js,ts,jsx,tsx}",
     "../../packages/ui/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: "class",
+  darkMode: ["class", ".blah"],
   theme: {
     fontFamily: {
       cal: ["Open Sans", "sans-serif"],
@@ -28,7 +28,7 @@ module.exports = {
         bookinghighlight: "var(--booking-highlight-color)",
         black: "#111111",
         gray: {
-          50: "#F8F8F8",
+          50: "#F8F8FE",
           100: "#F5F5F5",
           200: "#E7ECF2",
           300: "#CFCFCF",

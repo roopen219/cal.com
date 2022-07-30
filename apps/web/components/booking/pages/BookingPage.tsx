@@ -445,8 +445,7 @@ const BookingPage = ({
 
   const disableInput = !!rescheduleUid;
   const disabledExceptForOwner = disableInput && !loggedInIsOwner;
-  const inputClassName =
-    "focus:border-brand block w-full rounded-sm border-gray-300 focus:ring-black disabled:bg-gray-200 disabled:hover:cursor-not-allowed dark:border-gray-900 dark:bg-gray-700 dark:text-white dark:selection:bg-green-500 disabled:dark:text-gray-500 sm:text-sm";
+  const inputClassName = "block w-full sellular-input--text";
 
   let isSmsReminderNumberNeeded = false;
 
@@ -563,7 +562,7 @@ const BookingPage = ({
                   </p>
                 )}
                 {!rescheduleUid && eventType.recurringEvent?.freq && recurringEventCount && (
-                  <div className="mb-3 text-gray-600 dark:text-white">
+                  <div className="mb-3 text-gray-500 dark:text-white">
                     <RefreshIcon className="mr-[10px] -mt-1 ml-[2px] inline-block h-4 w-4 text-gray-400" />
                     <p className="mb-1 -ml-2 inline px-2 py-1">
                       {getEveryFreqFor({
@@ -588,7 +587,7 @@ const BookingPage = ({
                           content={recurringStrings.slice(5).map((aDate, key) => (
                             <p key={key}>{aDate}</p>
                           ))}>
-                          <p className="text-gray-600 dark:text-white">
+                          <p className="text-gray-500 dark:text-white">
                             {t("plus_more", { count: recurringStrings.length - 5 })}
                           </p>
                         </Tooltip>
@@ -603,7 +602,7 @@ const BookingPage = ({
                 )}
                 {booking?.startTime && rescheduleUid && (
                   <div>
-                    <p className="mt-8 mb-2 text-gray-600 dark:text-white" data-testid="former_time_p">
+                    <p className="mt-8 mb-2 text-gray-500 dark:text-white" data-testid="former_time_p">
                       {t("former_time")}
                     </p>
                     <p className="text-gray-500 line-through dark:text-white">
@@ -616,7 +615,7 @@ const BookingPage = ({
               <div className="sm:w-1/2 sm:pl-8 sm:pr-4">
                 <Form form={bookingForm} handleSubmit={bookEvent}>
                   <div className="mb-4">
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-white">
+                    <label htmlFor="name" className="sellular-input-label block">
                       {t("your_name")}
                     </label>
                     <div className="mt-1">
@@ -633,9 +632,7 @@ const BookingPage = ({
                     </div>
                   </div>
                   <div className="mb-4">
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 dark:text-white">
+                    <label htmlFor="email" className="sellular-input-label block ">
                       {t("email_address")}
                     </label>
                     <div className="mt-1">
@@ -666,10 +663,10 @@ const BookingPage = ({
                         {t("location")}
                       </span>
                       {locations.map((location, i) => (
-                        <label key={i} className="block">
+                        <label key={i} className="sellular-input-label block">
                           <input
                             type="radio"
-                            className="location h-4 w-4 border-gray-300 text-black focus:ring-black ltr:mr-2 rtl:ml-2"
+                            className="location border-brand focus:ring-brand h-4 w-4 text-black ltr:mr-2 rtl:ml-2"
                             {...bookingForm.register("locationType", { required: true })}
                             value={location.type}
                             defaultChecked={selectedLocation === location.type}
@@ -683,9 +680,7 @@ const BookingPage = ({
                   )}
                   {selectedLocation === LocationType.Phone && (
                     <div className="mb-4">
-                      <label
-                        htmlFor="phone"
-                        className="block text-sm font-medium text-gray-700 dark:text-white">
+                      <label htmlFor="phone" className="sellular-input-label block">
                         {t("phone_number")}
                       </label>
                       <div className="mt-1">
@@ -711,9 +706,7 @@ const BookingPage = ({
                     .map((input) => (
                       <div className="mb-4" key={input.id}>
                         {input.type !== EventTypeCustomInputType.BOOL && (
-                          <label
-                            htmlFor={"custom_" + input.id}
-                            className="mb-1 block text-sm font-medium text-gray-700 dark:text-white">
+                          <label htmlFor={"custom_" + input.id} className="sellular-input-label block">
                             {input.label}
                           </label>
                         )}
@@ -765,9 +758,7 @@ const BookingPage = ({
                               placeholder=""
                               disabled={disabledExceptForOwner}
                             />
-                            <label
-                              htmlFor={"custom_" + input.id}
-                              className="mb-1 block text-sm font-medium text-gray-700 dark:text-white">
+                            <label htmlFor={"custom_" + input.id} className="sellular-input-label block">
                               {input.label}
                             </label>
                           </div>
@@ -780,16 +771,14 @@ const BookingPage = ({
                         <label
                           onClick={() => setGuestToggle(!guestToggle)}
                           htmlFor="guests"
-                          className="mb-1 block text-sm font-medium hover:cursor-pointer dark:text-white">
+                          className="sellular-input-label block">
                           {/*<UserAddIcon className="inline-block w-5 h-5 mr-1 -mt-1" />*/}
                           {t("additional_guests")}
                         </label>
                       )}
                       {guestToggle && (
                         <div>
-                          <label
-                            htmlFor="guests"
-                            className="mb-1 block text-sm font-medium text-gray-700 dark:text-white">
+                          <label htmlFor="guests" className="sellular-input-label block">
                             {t("guests")}
                           </label>
                           {!disableInput && (
@@ -841,9 +830,7 @@ const BookingPage = ({
                   )}
                   {isSmsReminderNumberNeeded && selectedLocation !== LocationType.Phone && (
                     <div className="mb-4">
-                      <label
-                        htmlFor="smsReminderNumber"
-                        className="block text-sm font-medium text-gray-700 dark:text-white">
+                      <label htmlFor="smsReminderNumber" className="sellular-input-labele block">
                         {t("number_for_sms_reminders")}
                       </label>
                       <div className="mt-1">
@@ -865,9 +852,7 @@ const BookingPage = ({
                     </div>
                   )}
                   <div className="mb-4">
-                    <label
-                      htmlFor="notes"
-                      className="mb-1 block text-sm font-medium text-gray-700 dark:text-white">
+                    <label htmlFor="notes" className="sellular-input-label block">
                       {rescheduleUid ? t("reschedule_optional") : t("additional_notes")}
                     </label>
                     {rescheduleUid ? (
