@@ -168,7 +168,8 @@ export const BaseEmailHtml = (props: {
                                 lineHeight: 1,
                                 textAlign: "left",
                                 color: "#000000",
-                              }}></div>
+                              }}
+                            />
                           </td>
                         </tr>
                       </tbody>
@@ -179,7 +180,6 @@ export const BaseEmailHtml = (props: {
               </td>
             </Row>
           </div>
-          <EmailBodyLogo />
           <RawHtml html="<!--[if mso | IE]></td></tr></table><![endif]-->" />
         </div>
       </body>
