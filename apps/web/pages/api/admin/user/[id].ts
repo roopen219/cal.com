@@ -1,3 +1,4 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { pick } from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 import z from "zod";
@@ -24,49 +25,63 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === "GET") {
-    return res.status(405).json({ message: "Method Not Allowed" });
-  }
-
-  if (req.method === "PATCH") {
-    const updatedUser = await prisma.user.update({
+    const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
-      data: {
-        ...pick(req.body.data, [
-          "username",
-          "name",
-          "avatar",
-          "timeZone",
-          "weekStart",
-          "hideBranding",
-          "theme",
-          "completedOnboarding",
-          "plan",
-          "verified",
-        ]),
-        bio: req.body.description ?? req.body.data?.bio,
-      },
-      select: {
-        id: true,
-        username: true,
-        name: true,
-        email: true,
-        emailVerified: true,
-        bio: true,
-        avatar: true,
-        timeZone: true,
-        weekStart: true,
-        startTime: true,
-        endTime: true,
-        bufferTime: true,
-        hideBranding: true,
-        theme: true,
-        createdDate: true,
-        plan: true,
-        completedOnboarding: true,
-      },
     });
-    return res.status(200).json({ message: "User Updated", data: updatedUser });
+    return res.status(200).json({ data: user });
+  }
+
+  if (req.method === "PATCH") {
+    try {
+      const updatedUser = await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          ...pick(req.body, [
+            "username",
+            "name",
+            "avatar",
+            "timeZone",
+            "weekStart",
+            "hideBranding",
+            "theme",
+            "completedOnboarding",
+            "plan",
+            "verified",
+            "bio",
+          ]),
+        },
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          email: true,
+          emailVerified: true,
+          bio: true,
+          avatar: true,
+          timeZone: true,
+          weekStart: true,
+          startTime: true,
+          endTime: true,
+          bufferTime: true,
+          hideBranding: true,
+          theme: true,
+          createdDate: true,
+          plan: true,
+          completedOnboarding: true,
+        },
+      });
+      return res.status(200).json({ message: "User Updated", data: updatedUser });
+    } catch (e) {
+      if (e instanceof PrismaClientKnownRequestError) {
+        if (e.code === "P2002") {
+          return res.status(422).json({ message: "Username already taken" });
+        }
+      }
+      throw e;
+    }
   }
 }

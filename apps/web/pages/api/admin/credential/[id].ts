@@ -1,5 +1,6 @@
-import { mapValues, pick, toNumber } from "lodash";
+import { pick } from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
+import z from "zod";
 
 import verifyAdminToken from "@lib/auth/verifyAdminToken";
 import prisma from "@lib/prisma";
@@ -11,38 +12,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(422).json({ message: (err as Error).message });
   }
 
-  const { type, key, userId, appId } = req.body;
+  const querySchema = z.object({
+    id: z.string().transform((val) => parseInt(val)),
+  });
 
-  if (req.method === "POST") {
-    const credential = await prisma.credential.create({
-      data: {
-        type,
-        key,
-        userId,
-        appId,
-      },
-    });
-    return res.status(201).json({ message: "Credential created", data: credential });
+  const parsedQuery = querySchema.safeParse(req.query);
+  const credentialId = parsedQuery.success ? parsedQuery.data.id : null;
+
+  if (!credentialId) {
+    return res.status(400).json({ message: "No credential id provided" });
   }
 
   if (req.method === "GET") {
-    const credential = await prisma.credential.findMany({
+    const credential = await prisma.credential.findUnique({
       where: {
-        ...mapValues(req.query || {}, (val, key) => {
-          if (key === "id" || key === "userId") {
-            return toNumber(val);
-          }
-          return val;
-        }),
+        id: credentialId,
       },
     });
     return res.status(200).json({ data: credential });
   }
 
-  if (req.method === "PATCH" && req.query?.id) {
+  if (req.method === "PATCH") {
     const credential = await prisma.credential.update({
       where: {
-        id: toNumber(req.query.id),
+        id: credentialId,
       },
       data: {
         ...pick(req.body, ["key"]),
