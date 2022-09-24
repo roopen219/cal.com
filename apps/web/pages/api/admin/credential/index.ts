@@ -1,4 +1,4 @@
-import { mapValues, pick, toNumber } from "lodash";
+import { mapValues, toNumber } from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import verifyAdminToken from "@lib/auth/verifyAdminToken";

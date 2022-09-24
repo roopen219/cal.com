@@ -20,6 +20,7 @@
     "delete-app": "ts-node --transpile-only ./delete-app.ts"
   },
   "devDependencies": {
+    "@types/cryptr": "4.0.1",
     "npm-run-all": "^4.1.5",
     "prisma": "^3.15.2",
     "ts-node": "^10.6.0",
@@ -28,7 +29,10 @@
   },
   "dependencies": {
     "@calcom/lib": "*",
-    "@prisma/client": "^3.15.2"
+    "@prisma/client": "^3.15.2",
+    "cryptr": "6.0.3",
+    "fast-safe-stringify": "2.1.1",
+    "lodash": "4.17.21"
   },
   "main": "index.ts",
   "types": "index.d.ts",
