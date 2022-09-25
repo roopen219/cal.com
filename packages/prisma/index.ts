@@ -23,10 +23,23 @@ export const customPrisma = (options: Prisma.PrismaClientOptions) =>
 if (process.env.NODE_ENV !== "production") {
   globalThis.prisma = prisma;
 }
-// If any changed on middleware server restart is required
-bookingReferenceMiddleware(prisma);
-credentialEncryptionMiddleware(prisma);
-eventTypeDescriptionParseAndSanitizeMiddleware(prisma);
+
+if (process.env.NODE_ENV !== "production") {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  if (!globalThis.registeredMiddlewares) {
+    bookingReferenceMiddleware(prisma);
+    credentialEncryptionMiddleware(prisma);
+    eventTypeDescriptionParseAndSanitizeMiddleware(prisma);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    globalThis.registeredMiddlewares = true;
+  }
+} else {
+  bookingReferenceMiddleware(prisma);
+  credentialEncryptionMiddleware(prisma);
+  eventTypeDescriptionParseAndSanitizeMiddleware(prisma);
+}
 
 export default prisma;
 

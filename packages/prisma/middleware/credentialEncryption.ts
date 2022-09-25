@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
 import Cryptr from "cryptr";
 import stringify from "fast-safe-stringify";
 import { get, isArray } from "lodash";
@@ -11,8 +11,6 @@ async function middleware(prisma: PrismaClient) {
   const cryptr = new Cryptr(process.env.NEXT_ENCRYPTION_KEY);
 
   prisma.$use(async (params, next) => {
-    // Check incoming query type
-
     if (params.model === "Credential") {
       if (params.action === "upsert") {
         params.args["create"] = {
@@ -88,6 +86,40 @@ async function middleware(prisma: PrismaClient) {
       return {
         ...result,
         ...(get(result, "keys.encrypted") ? { keys: JSON.parse(cryptr.decrypt(result.keys.encrypted)) } : {}),
+      };
+    }
+
+    if (params.model === "Webhook") {
+      if (params.action === "upsert") {
+        params.args["create"] = {
+          ...params.args.create,
+          ...(get(params, "args.create.secret") ? { secret: cryptr.encrypt(params.args.create.secret) } : {}),
+        };
+        params.args["update"] = {
+          ...params.args.update,
+          ...(get(params, "args.update.secret") ? { secret: cryptr.encrypt(params.args.update.secret) } : {}),
+        };
+      }
+
+      if (params.action === "create" || params.action === "update") {
+        params.args["data"] = {
+          ...params.args.data,
+          ...(get(params, "args.data.secret") ? { secret: cryptr.encrypt(params.args.data.secret) } : {}),
+        };
+      }
+
+      const result = await next(params);
+
+      if (isArray(result)) {
+        return result.map((item) => ({
+          ...item,
+          ...(get(item, "secret") ? { secret: cryptr.decrypt(item.secret) } : {}),
+        }));
+      }
+
+      return {
+        ...result,
+        ...(get(result, "secret") ? { secret: cryptr.decrypt(result.secret) } : {}),
       };
     }
 
