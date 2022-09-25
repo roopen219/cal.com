@@ -2,8 +2,9 @@ import { pick } from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 import z from "zod";
 
+import prisma from "@calcom/prisma";
+
 import { getSession } from "@lib/auth";
-import prisma from "@lib/prisma";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req });
@@ -23,8 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ message: "No user id provided" });
   }
 
-  const authenticatedUser = await prisma.user.findFirst({
-    rejectOnNotFound: true,
+  const authenticatedUser = await prisma.user.findFirstOrThrow({
     where: {
       id: session.user.id,
     },
@@ -52,6 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           "name",
           "avatar",
           "timeZone",
+          "timeFormat",
           "weekStart",
           "hideBranding",
           "theme",
@@ -68,6 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         bio: true,
         avatar: true,
         timeZone: true,
+        timeFormat: true,
         weekStart: true,
         startTime: true,
         endTime: true,

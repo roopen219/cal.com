@@ -1,13 +1,13 @@
 import { GetServerSidePropsContext } from "next";
 import { JSONObject } from "superjson/dist/types";
 
-import { getLocationLabels } from "@calcom/app-store/utils";
+import { LocationObject, privacyFilteredLocations } from "@calcom/app-store/locations";
 import { parseRecurringEvent } from "@calcom/lib";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import prisma from "@calcom/prisma";
 
 import { asStringOrNull, asStringOrThrow } from "@lib/asStringOrNull";
 import getBooking, { GetBookingType } from "@lib/getBooking";
-import prisma from "@lib/prisma";
 import { inferSSRProps } from "@lib/types/inferSSRProps";
 
 import BookingPage from "@components/booking/pages/BookingPage";
@@ -16,10 +16,11 @@ export type TeamBookingPageProps = inferSSRProps<typeof getServerSideProps>;
 
 export default function TeamBookingPage(props: TeamBookingPageProps) {
   const { t } = useLocale();
-  const locationLabels = getLocationLabels(t);
 
-  return <BookingPage {...props} locationLabels={locationLabels} />;
+  return <BookingPage {...props} />;
 }
+
+TeamBookingPage.isThemeSupported = true;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const eventTypeId = parseInt(asStringOrThrow(context.query.type));
@@ -54,6 +55,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       currency: true,
       metadata: true,
       seatsPerTimeSlot: true,
+      schedulingType: true,
       workflows: {
         include: {
           workflow: {
@@ -85,6 +87,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const eventType = {
     ...eventTypeRaw,
+    //TODO: Use zodSchema to verify it instead of using Type Assertion
+    locations: privacyFilteredLocations(eventTypeRaw.locations as LocationObject[]),
     recurringEvent: parseRecurringEvent(eventTypeRaw.recurringEvent),
   };
 
@@ -94,6 +98,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       metadata: (eventType.metadata || {}) as JSONObject,
       periodStartDate: e.periodStartDate?.toString() ?? null,
       periodEndDate: e.periodEndDate?.toString() ?? null,
+      users: eventType.users.map((u) => ({
+        id: u.id,
+        name: u.name,
+        username: u.username,
+        avatar: u.avatar,
+        image: u.avatar,
+        slug: u.username,
+      })),
     };
   })[0];
 

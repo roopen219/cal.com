@@ -1,8 +1,8 @@
-import { ChevronDownIcon, DotsHorizontalIcon } from "@heroicons/react/solid";
 import React, { FC } from "react";
 
-import Button from "@calcom/ui/Button";
 import Dropdown, { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@calcom/ui/Dropdown";
+import { Icon } from "@calcom/ui/Icon";
+import Button from "@calcom/ui/v2/core/Button";
 
 import { SVGComponent } from "@lib/types/SVGComponent";
 
@@ -37,8 +37,8 @@ const DropdownActions = ({
   return (
     <Dropdown>
       {!actionTrigger ? (
-        <DropdownMenuTrigger className="h-[38px] w-[38px] cursor-pointer rounded-sm border border-transparent text-neutral-500 hover:border-gray-300 hover:text-neutral-900">
-          <DotsHorizontalIcon className="h-5 w-5 group-hover:text-gray-800" />
+        <DropdownMenuTrigger asChild>
+          <Button type="button" color="secondary" size="icon" StartIcon={Icon.FiMoreHorizontal} />
         </DropdownMenuTrigger>
       ) : (
         <DropdownMenuTrigger asChild>{actionTrigger}</DropdownMenuTrigger>
@@ -48,12 +48,10 @@ const DropdownActions = ({
           <DropdownMenuItem key={action.id} className="focus-visible:outline-none">
             <Button
               type="button"
-              size="sm"
               color="minimal"
               className="w-full rounded-none font-normal"
               href={action.href}
               StartIcon={action.icon}
-              startIconClassName={action.iconClassName}
               onClick={action.onClick || defaultAction}
               data-testid={action.id}>
               {action.label}
@@ -74,7 +72,7 @@ const TableActions: FC<Props> = ({ actions }) => {
   });
   return (
     <>
-      <div className="hidden space-x-2 rtl:space-x-reverse lg:block">
+      <div className="hidden space-x-2 rtl:space-x-reverse lg:flex">
         {actions.map((action) => {
           const button = (
             <Button
@@ -83,8 +81,7 @@ const TableActions: FC<Props> = ({ actions }) => {
               href={action.href}
               onClick={action.onClick || defaultAction}
               StartIcon={action.icon}
-              startIconClassName={action.iconClassName}
-              {...(action?.actions ? { EndIcon: ChevronDownIcon } : null)}
+              {...(action?.actions ? { EndIcon: Icon.FiChevronDown } : null)}
               disabled={action.disabled}
               color={action.color || "secondary"}>
               {action.label}

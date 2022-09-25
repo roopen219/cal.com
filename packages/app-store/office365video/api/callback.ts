@@ -6,6 +6,7 @@ import prisma from "@calcom/prisma";
 
 import { decodeOAuthState } from "../../_utils/decodeOAuthState";
 import getAppKeysFromSlug from "../../_utils/getAppKeysFromSlug";
+import getInstalledAppPath from "../../_utils/getInstalledAppPath";
 
 const scopes = ["OnlineMeetings.ReadWrite"];
 
@@ -14,7 +15,6 @@ let client_secret = "";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { code } = req.query;
-  console.log("🚀 ~ file: callback.ts ~ line 14 ~ handler ~ code", req.query);
 
   if (typeof code !== "string") {
     res.status(400).json({ message: "No code returned" });
@@ -102,5 +102,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   const state = decodeOAuthState(req);
-  return res.redirect(getSafeRedirectUrl(state?.returnTo) ?? "/apps/installed");
+  return res.redirect(
+    getSafeRedirectUrl(state?.returnTo) ?? getInstalledAppPath({ variant: "conferencing", slug: "msteams" })
+  );
 }

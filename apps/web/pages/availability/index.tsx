@@ -1,18 +1,25 @@
-import { ClockIcon } from "@heroicons/react/outline";
-
+/**
+ * @deprecated modifications to this file should be v2 only
+ * Use `/apps/web/pages/v2/availability/index.tsx` instead
+ */
+import { ScheduleListItem } from "@calcom/features/schedules/components/ScheduleListItem";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import showToast from "@calcom/lib/notification";
+import { inferQueryOutput, trpc } from "@calcom/trpc/react";
 import EmptyScreen from "@calcom/ui/EmptyScreen";
+import { Icon } from "@calcom/ui/Icon";
+import Shell from "@calcom/ui/Shell";
 
 import { withQuery } from "@lib/QueryCell";
 import { HttpError } from "@lib/core/http/error";
-import { inferQueryOutput, trpc } from "@lib/trpc";
 
-import Shell from "@components/Shell";
 import { NewScheduleButton } from "@components/availability/NewScheduleButton";
-import { ScheduleListItem } from "@components/availability/ScheduleListItem";
 import SkeletonLoader from "@components/availability/SkeletonLoader";
 
+/**
+ * @deprecated modifications to this file should be v2 only
+ * Use `/apps/web/pages/v2/availability/index.tsx` instead
+ */
 export function AvailabilityList({ schedules }: inferQueryOutput<"viewer.availability.list">) {
   const { t } = useLocale();
   const utils = trpc.useContext();
@@ -32,7 +39,7 @@ export function AvailabilityList({ schedules }: inferQueryOutput<"viewer.availab
     <>
       {schedules.length === 0 ? (
         <EmptyScreen
-          Icon={ClockIcon}
+          Icon={Icon.FiClock}
           headline={t("new_schedule_heading")}
           description={t("new_schedule_description")}
         />
@@ -44,7 +51,6 @@ export function AvailabilityList({ schedules }: inferQueryOutput<"viewer.availab
                 key={schedule.id}
                 schedule={schedule}
                 deleteFunction={deleteMutation.mutate}
-                isDeleting={deleteMutation.isLoading}
               />
             ))}
           </ul>
@@ -60,11 +66,7 @@ export default function AvailabilityPage() {
   const { t } = useLocale();
   return (
     <div>
-      <Shell
-        heading={t("availability")}
-        subtitle={t("configure_availability")}
-        CTA={<NewScheduleButton />}
-        customLoader={<SkeletonLoader />}>
+      <Shell heading={t("availability")} subtitle={t("configure_availability")} CTA={<NewScheduleButton />}>
         <WithQuery success={({ data }) => <AvailabilityList {...data} />} customLoader={<SkeletonLoader />} />
       </Shell>
     </div>

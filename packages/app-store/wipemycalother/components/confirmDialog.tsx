@@ -1,19 +1,18 @@
-import { ClockIcon, XIcon } from "@heroicons/react/outline";
-import { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
+import { ClockIcon } from "@heroicons/react/outline";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useMutation } from "react-query";
 
 import dayjs from "@calcom/dayjs";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import logger from "@calcom/lib/logger";
 import showToast from "@calcom/lib/notification";
-import Button from "@calcom/ui/Button";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader } from "@calcom/ui/Dialog";
+import { trpc } from "@calcom/trpc/react";
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@calcom/ui/Dialog";
+import Button from "@calcom/ui/v2/core/Button";
 
 interface IConfirmDialogWipe {
   isOpenDialog: boolean;
   setIsOpenDialog: Dispatch<SetStateAction<boolean>>;
-  trpc: any;
 }
 
 interface IWipeMyCalAction {
@@ -45,7 +44,7 @@ const wipeMyCalAction = async (props: IWipeMyCalAction) => {
 
 export const ConfirmDialog = (props: IConfirmDialogWipe) => {
   const { t } = useLocale();
-  const { isOpenDialog, setIsOpenDialog, trpc } = props;
+  const { isOpenDialog, setIsOpenDialog } = props;
   const [isLoading, setIsLoading] = useState(false);
   const today = dayjs();
   const initialDate = today.startOf("day");
@@ -94,7 +93,7 @@ export const ConfirmDialog = (props: IConfirmDialogWipe) => {
                 {initialDate.format(dateFormat)} - {endDate.format(dateFormat)}
               </strong>
             </p>
-            <p className="mt-6 mb-2 text-sm font-bold text-black">Are you sure? This can&apos;t be undone</p>
+            <p className="mt-6 mb-2 text-sm">Are you sure? This can&apos;t be undone</p>
           </div>
         </div>
 
@@ -104,6 +103,7 @@ export const ConfirmDialog = (props: IConfirmDialogWipe) => {
           </Button>
 
           <Button
+            color="primary"
             data-testid="send_request"
             disabled={isLoading}
             onClick={async () => {

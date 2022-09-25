@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import {
   QueryObserverIdleResult,
   QueryObserverLoadingErrorResult,
@@ -8,22 +8,19 @@ import {
   UseQueryResult,
 } from "react-query";
 
-import { Alert } from "@calcom/ui/Alert";
-
-import { trpc } from "@lib/trpc";
-
-import Loader from "@components/Loader";
-
-import type { AppRouter } from "@server/routers/_app";
-import type { TRPCClientErrorLike } from "@trpc/client";
-import type { UseTRPCQueryOptions } from "@trpc/react";
-// import type { inferProcedures } from "@trpc/react/src/createReactQueryHooks";
+import { useLocale } from "@calcom/lib/hooks/useLocale";
+import type { TRPCClientErrorLike } from "@calcom/trpc/client";
+import type { UseTRPCQueryOptions } from "@calcom/trpc/react";
+import { trpc } from "@calcom/trpc/react";
 import type {
   inferHandlerInput,
   inferProcedureInput,
   inferProcedureOutput,
   ProcedureRecord,
-} from "@trpc/server";
+} from "@calcom/trpc/server";
+import type { AppRouter } from "@calcom/trpc/server/routers/_app";
+import { Alert } from "@calcom/ui/Alert";
+import Loader from "@calcom/ui/Loader";
 
 type ErrorLike = {
   message: string;
@@ -36,7 +33,7 @@ interface QueryCellOptionsBase<TData, TError extends ErrorLike> {
   error?: (
     query: QueryObserverLoadingErrorResult<TData, TError> | QueryObserverRefetchErrorResult<TData, TError>
   ) => JSXElementOrNull;
-  loading?: (query: QueryObserverLoadingResult<TData, TError>) => JSXElementOrNull;
+  loading?: (query: QueryObserverLoadingResult<TData, TError> | null) => JSXElementOrNull;
   idle?: (query: QueryObserverIdleResult<TData, TError>) => JSXElementOrNull;
 }
 
@@ -60,16 +57,25 @@ export function QueryCell<TData, TError extends ErrorLike>(
 export function QueryCell<TData, TError extends ErrorLike>(
   opts: QueryCellOptionsNoEmpty<TData, TError>
 ): JSXElementOrNull;
+/** @deprecated Use `trpc.useQuery` instead. */
 export function QueryCell<TData, TError extends ErrorLike>(
   opts: QueryCellOptionsNoEmpty<TData, TError> | QueryCellOptionsWithEmpty<TData, TError>
 ) {
   const { query } = opts;
+  const { isLocaleReady } = useLocale();
+  const StatusLoader = opts.customLoader || <Loader />; // Fixes edge case where this can return null form query cell
+
+  if (query.status === "loading" || !isLocaleReady) {
+    return opts.loading?.(query.status === "loading" ? query : null) ?? StatusLoader;
+  }
+
   if (query.status === "success") {
     if ("empty" in opts && (query.data == null || (Array.isArray(query.data) && query.data.length === 0))) {
       return opts.empty(query);
     }
     return opts.success(query as any);
   }
+
   if (query.status === "error") {
     return (
       opts.error?.(query) ?? (
@@ -77,11 +83,7 @@ export function QueryCell<TData, TError extends ErrorLike>(
       )
     );
   }
-  const StatusLoader = opts.customLoader || <Loader />; // Fixes edge case where this can return null form query cell
 
-  if (query.status === "loading") {
-    return opts.loading?.(query) ?? StatusLoader;
-  }
   if (query.status === "idle") {
     return opts.idle?.(query) ?? StatusLoader;
   }
@@ -117,7 +119,6 @@ const withQuery = <TPath extends keyof TQueryValues & string>(
     >
   ) {
     const query = trpc.useQuery(pathAndInput, params);
-
     return <QueryCell query={query} {...opts} />;
   };
 };

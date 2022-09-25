@@ -2,12 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
 :root {
   --brand-color: #5506be;
   --brand-text-color: #ffffff;
   --brand-color-dark-mode: #fafafa;
   --brand-text-color-dark-mode: #5506be;
 }
+
+/*
+  Desktop App specific CSS
+    https://docs.todesktop.com/
+*/
+
+/* disable user selection on buttons, links and images on desktop app */
+html.todesktop button,
+html.todesktop a,
+html.todesktop img,
+html.todesktop header{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default !important;
+}
+
+html.todesktop,
+html.todesktop div  {
+  cursor: default !important;
+}
+
+/* make header draggable on desktop app */
+html.todesktop header{
+  -webkit-app-region: drag;
+}
+html.todesktop header button{
+  -webkit-app-region: no-drag;
+}
+
+html.todesktop .logo {
+  display: none;
+}
+
+.desktop-only {
+  display: none;
+}
+
+html.todesktop .desktop-only {
+  display: block;
+}
+
+html.todesktop .desktop-hidden {
+  display: none;
+}
+
+html.todesktop header {
+  margin-top: -14px;
+}
+
+html.todesktop header nav {
+  margin-top: 8px;
+}
+
+html.todesktop aside {
+  margin:0px -6px;
+}
+
+/* TODO: add "native" MacOS colors
+   requires darkmode for MacOS first
+
+html.todesktop .desktop-transparent{
+  background: transparent !important;
+  border: none !important;
+}
+
+html.todesktop aside a {
+  height: 28px;
+  padding: 0px 8px;
+  font-size: 12px;
+  color: #383438 !important
+}
+
+html.todesktop nav a:hover{
+  background-color: inherit !important
+}
+
+html.todesktop nav a[aria-current="page"]{
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.todesktop nav a svg{
+  color: #0272F7 !important
+}
+*/
+
+
 
 /*
   Adds Utility to hide scrollbar to tailwind
@@ -56,15 +151,18 @@ select:focus {
 button[role="switch"][data-state="checked"] {
   @apply bg-gray-900;
 }
-
-button[role="switch"][data-state="checked"] span {
+/* TODO: avoid global specific css */
+/* button[role="switch"][data-state="checked"] span {
   transform: translateX(16px);
-}
+} */
 
 /* DateRangePicker */
+/*
+  TODO:: Remove on V2 launch
+ */
 .react-daterange-picker > .react-daterange-picker__wrapper {
   /* border consistent with other inputs */
-  @apply rounded-sm border-gray-300 px-2 py-1.5 sm:text-sm lg:py-1;
+  @apply rounded-sm border-gray-300 px-2 py-1.5 text-sm lg:py-1;
 }
 
 .react-daterange-picker > .react-daterange-picker__wrapper input {
@@ -72,86 +170,8 @@ button[role="switch"][data-state="checked"] span {
   @apply my-0.5 h-auto rounded-sm py-0.5;
 }
 
-/* note(PeerRich): TODO move @layer components into proper React Components: <Button color="primary" size="xs" /> */
+
 @layer components {
-  /* Primary buttons */
-  .btn-xs.btn-primary {
-    @apply inline-flex items-center rounded border border-transparent bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-sm.btn-primary {
-    @apply inline-flex items-center rounded-sm border border-transparent bg-neutral-900 px-3 py-2 text-sm font-medium leading-4 text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn.btn-primary {
-    @apply inline-flex items-center rounded-sm border border-transparent bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-lg.btn-primary {
-    @apply inline-flex items-center rounded-sm border border-transparent bg-neutral-900 px-4 py-2 text-base font-medium text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-xl.btn-primary {
-    @apply inline-flex items-center rounded-sm border border-transparent bg-neutral-900 px-6 py-3 text-base font-medium text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-wide.btn-primary {
-    @apply w-full rounded-sm border border-transparent bg-neutral-900 px-4 py-2 text-center text-sm font-medium text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  /* Secondary buttons */
-  .btn-xs.btn-secondary {
-    @apply inline-flex items-center rounded border border-transparent bg-neutral-100 px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-sm.btn-secondary {
-    @apply inline-flex items-center rounded-sm border border-transparent bg-neutral-100 px-3 py-2 text-sm font-medium leading-4 text-neutral-700 hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn.btn-secondary {
-    @apply inline-flex items-center rounded-sm border border-transparent bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-lg.btn-secondary {
-    @apply inline-flex items-center rounded-sm border border-transparent bg-neutral-100 px-4 py-2 text-base font-medium text-neutral-700 hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-xl.btn-secondary {
-    @apply inline-flex items-center rounded-sm border border-transparent bg-neutral-100 px-6 py-3 text-base font-medium text-neutral-700 hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-wide.btn-secondary {
-    @apply w-full rounded-sm border border-transparent bg-neutral-100 px-4 py-2 text-center text-sm font-medium text-neutral-700 hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  /* White buttons */
-  .btn-xs.btn-white {
-    @apply inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-sm.btn-white {
-    @apply inline-flex items-center rounded-sm border border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn.btn-white {
-    @apply inline-flex items-center rounded-sm border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-lg.btn-white {
-    @apply inline-flex items-center rounded-sm border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-xl.btn-white {
-    @apply inline-flex items-center rounded-sm border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-
-  .btn-wide.btn-white {
-    @apply w-full rounded-sm border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2;
-  }
-  /* btn icon */
-  .btn-icon {
-    @apply cursor-pointer rounded-sm border border-transparent p-2 text-neutral-500 hover:border-gray-300 hover:text-neutral-900;
-  }
   /* slider */
   .slider {
     @apply relative flex h-4 w-40 select-none items-center;
@@ -176,6 +196,12 @@ button[role="switch"][data-state="checked"] span {
   .slider .slider-thumb:focus {
     box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.2);
   }
+
+  /* React Select V2 */
+  .cal-react-select-container .cal-react-select__control {
+    @apply bg-white min-h-[36px] h-[36px] text-sm leading-4 border-gray-300 hover:border-neutral-400 focus-within:ring-2 focus-within:ring-neutral-800 focus-within:border-0 placeholder:text-gray-400 placeholder:text-sm placeholder:font-normal;
+  }
+
 }
 
 /* !important to style multi-email input */
@@ -193,6 +219,10 @@ button[role="switch"][data-state="checked"] span {
 @media all and (display-mode: standalone) {
   .bottom-nav {
     padding-bottom: 24px;
+  }
+
+  .cta {
+    bottom: 100px;
   }
 }
 
@@ -225,7 +255,7 @@ button[role="switch"][data-state="checked"] span {
 }
 
 .react-multi-email > [type="text"] {
-  @apply focus:border-brand block w-full rounded-[2px] border-gray-300 focus:ring-black dark:border-gray-900 dark:bg-gray-700 dark:text-white sm:text-sm;
+  @apply dark:placeholder:text-darkgray-600 focus:border-brand dark:border-darkgray-300 dark:text-darkgray-900 block w-full rounded-md border-gray-300 text-sm focus:ring-black disabled:bg-gray-200 disabled:hover:cursor-not-allowed dark:bg-transparent dark:selection:bg-green-500 disabled:dark:text-gray-500 dark:text-white;
 }
 
 .react-multi-email [data-tag] {
@@ -281,7 +311,7 @@ button[role="switch"][data-state="checked"] span {
   font-size: inherit !important;
   font-weight: inherit !important;
   color: #000;
-  padding: 11px ​11px 9px !important;
+  padding: 11px 11px 9px !important;
   line-height: 16px !important;
 }
 
@@ -289,7 +319,7 @@ button[role="switch"][data-state="checked"] span {
   border: 2px solid #000 !important;
   border-radius: 2px !important;
   box-shadow: none !important;
-  padding: 10px ​10px 9px !important;
+  padding: 10px 10px 9px !important;
 }
 
 .DateRangePickerInput_arrow {
@@ -374,10 +404,6 @@ nav#nav--settings > a.active svg {
   @apply text-neutral-500;
 }
 
-body {
-  background-color: #f3f4f6;
-}
-
 hr {
   @apply border-gray-200;
 }
@@ -410,15 +436,15 @@ hr {
 }
 
 @keyframes slideInBottom {
-    from {
-        opacity: 0;
-        transform: translateY(30%);
-        pointer-events: none;
-    }
-    to {
-        opacity: 1;
-        pointer-events: auto;
-    }
+  from {
+    opacity: 0;
+    transform: translateY(30%);
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 /* animations */
@@ -429,17 +455,16 @@ hr {
 }
 
 @keyframes slideInTop {
-    from {
-      opacity: 0;
-      transform: translateY(-20%);
-      pointer-events: none;
-    }
-    to {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0%);
-
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-20%);
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0%);
+  }
 }
 
 .fadeIn {

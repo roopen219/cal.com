@@ -8,7 +8,7 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["filterJson", "interactiveTransactions"]
+  previewFeatures = ["interactiveTransactions"]
 }
 
 generator zod {
@@ -19,14 +19,14 @@ generator zod {
 }
 
 enum SchedulingType {
-  ROUND_ROBIN  @map("roundRobin")
-  COLLECTIVE   @map("collective")
+  ROUND_ROBIN @map("roundRobin")
+  COLLECTIVE  @map("collective")
 }
 
 enum PeriodType {
-  UNLIMITED  @map("unlimited")
-  ROLLING    @map("rolling")
-  RANGE      @map("range")
+  UNLIMITED @map("unlimited")
+  ROLLING   @map("rolling")
+  RANGE     @map("range")
 }
 
 model EventType {
@@ -42,8 +42,9 @@ model EventType {
   length                  Int
   hidden                  Boolean                 @default(false)
   users                   User[]                  @relation("user_eventtype")
+  owner                   User?                   @relation("owner", fields: [userId], references: [id], onDelete: Cascade)
   userId                  Int?
-  team                    Team?                   @relation(fields: [teamId], references: [id])
+  team                    Team?                   @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId                  Int?
   hashedLink              HashedLink?
   bookings                Booking[]
@@ -74,6 +75,7 @@ model EventType {
   currency                String                  @default("usd")
   slotInterval            Int?
   metadata                Json?
+  /// @zod.custom(imports.successRedirectUrl)
   successRedirectUrl      String?
   workflows               WorkflowsOnEventTypes[]
 
@@ -83,6 +85,7 @@ model EventType {
 
 model Credential {
   id                   Int                   @id @default(autoincrement())
+  // @@type is deprecated
   type                 String
   key                  Json
   user                 User?                 @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -109,14 +112,13 @@ model DestinationCalendar {
   id           Int         @id @default(autoincrement())
   integration  String
   externalId   String
-  user         User?       @relation(fields: [userId], references: [id])
+  user         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int?        @unique
-  booking      Booking?    @relation(fields: [bookingId], references: [id])
-  bookingId    Int?        @unique
-  eventType    EventType?  @relation(fields: [eventTypeId], references: [id])
+  booking      Booking[]
+  eventType    EventType?  @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
   eventTypeId  Int?        @unique
   credentialId Int?
-  credential   Credential? @relation(fields: [credentialId], references: [id])
+  credential   Credential? @relation(fields: [credentialId], references: [id], onDelete: Cascade)
 }
 
 enum UserPermissionRole {
@@ -161,7 +163,7 @@ model User {
   identityProviderId   String?
   availability         Availability[]
   invitedTo            Int?
-  plan                 UserPlan                @default(TRIAL)
+  plan                 UserPlan                @default(PRO)
   webhooks             Webhook[]
   brandColor           String                  @default("#292929")
   darkBrandColor       String                  @default("#fafafa")
@@ -180,11 +182,11 @@ model User {
   apiKeys              ApiKey[]
   accounts             Account[]
   sessions             Session[]
+  Feedback             Feedback[]
+  ownedEventTypes      EventType[]             @relation("owner")
   workflows            Workflow[]
   routingForms         App_RoutingForms_Form[] @relation("routing-form")
 
-
-  Feedback Feedback[]
   @@map(name: "users")
 }
 
@@ -206,12 +208,13 @@ enum MembershipRole {
 }
 
 model Membership {
-  teamId   Int
-  userId   Int
-  accepted Boolean        @default(false)
-  role     MembershipRole
-  team     Team           @relation(fields: [teamId], references: [id])
-  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId               Int
+  userId               Int
+  accepted             Boolean        @default(false)
+  role                 MembershipRole
+  team                 Team           @relation(fields: [teamId], references: [id])
+  user                 User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  disableImpersonation Boolean        @default(false)
 
   @@id([userId, teamId])
 }
@@ -238,6 +241,7 @@ model BookingReference {
   bookingId          Int?
   externalCalendarId String?
   deleted            Boolean?
+  credentialId       Int?
 }
 
 model Attendee {
@@ -251,51 +255,44 @@ model Attendee {
 }
 
 enum BookingStatus {
-  CANCELLED  @map("cancelled")
-  ACCEPTED   @map("accepted")
-  REJECTED   @map("rejected")
-  PENDING    @map("pending")
-}
-
-model DailyEventReference {
-  id         Int      @id @default(autoincrement())
-  dailyurl   String   @default("dailycallurl")
-  dailytoken String   @default("dailytoken")
-  booking    Booking? @relation(fields: [bookingId], references: [id])
-  bookingId  Int?     @unique
+  CANCELLED @map("cancelled")
+  ACCEPTED  @map("accepted")
+  REJECTED  @map("rejected")
+  PENDING   @map("pending")
 }
 
 model Booking {
-  id                  Int                  @id @default(autoincrement())
-  uid                 String               @unique
-  user                User?                @relation(fields: [userId], references: [id])
-  userId              Int?
-  references          BookingReference[]
-  eventType           EventType?           @relation(fields: [eventTypeId], references: [id])
-  eventTypeId         Int?
-  title               String
-  description         String?
-  customInputs        Json?
-  startTime           DateTime
-  endTime             DateTime
-  attendees           Attendee[]
-  location            String?
-  dailyRef            DailyEventReference?
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime?
-  status              BookingStatus        @default(ACCEPTED)
-  paid                Boolean              @default(false)
-  payment             Payment[]
-  destinationCalendar DestinationCalendar?
-  cancellationReason  String?
-  rejectionReason     String?
-  dynamicEventSlugRef String?
-  dynamicGroupSlugRef String?
-  rescheduled         Boolean?
-  fromReschedule      String?
-  recurringEventId    String?
-  smsReminderNumber   String?
-  workflowReminders   WorkflowReminder[]
+  id                    Int                  @id @default(autoincrement())
+  uid                   String               @unique
+  user                  User?                @relation(fields: [userId], references: [id])
+  userId                Int?
+  references            BookingReference[]
+  eventType             EventType?           @relation(fields: [eventTypeId], references: [id])
+  eventTypeId           Int?
+  title                 String
+  description           String?
+  customInputs          Json?
+  startTime             DateTime
+  endTime               DateTime
+  attendees             Attendee[]
+  location              String?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime?
+  status                BookingStatus        @default(ACCEPTED)
+  paid                  Boolean              @default(false)
+  payment               Payment[]
+  destinationCalendar   DestinationCalendar? @relation(fields: [destinationCalendarId], references: [id])
+  destinationCalendarId Int?
+  cancellationReason    String?
+  rejectionReason       String?
+  dynamicEventSlugRef   String?
+  dynamicGroupSlugRef   String?
+  rescheduled           Boolean?
+  fromReschedule        String?
+  recurringEventId      String?
+  smsReminderNumber     String?
+  workflowReminders     WorkflowReminder[]
+  scheduledJobs         String[]
 }
 
 model Schedule {
@@ -332,16 +329,16 @@ model SelectedCalendar {
 }
 
 enum EventTypeCustomInputType {
-  TEXT      @map("text")
-  TEXTLONG  @map("textLong")
-  NUMBER    @map("number")
-  BOOL      @map("bool")
+  TEXT     @map("text")
+  TEXTLONG @map("textLong")
+  NUMBER   @map("number")
+  BOOL     @map("bool")
 }
 
 model EventTypeCustomInput {
   id          Int                      @id @default(autoincrement())
   eventTypeId Int
-  eventType   EventType                @relation(fields: [eventTypeId], references: [id])
+  eventType   EventType                @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
   label       String
   type        EventTypeCustomInputType
   required    Boolean
@@ -375,6 +372,7 @@ enum PaymentType {
 model Payment {
   id         Int         @id @default(autoincrement())
   uid        String      @unique
+  // TODO: Use an App relationship instead of PaymentType enum?
   type       PaymentType
   bookingId  Int
   booking    Booking?    @relation(fields: [bookingId], references: [id], onDelete: Cascade)
@@ -391,6 +389,8 @@ enum WebhookTriggerEvents {
   BOOKING_CREATED
   BOOKING_RESCHEDULED
   BOOKING_CANCELLED
+  FORM_SUBMITTED
+  MEETING_ENDED
 }
 
 model Webhook {
@@ -407,6 +407,8 @@ model Webhook {
   app             App?                   @relation(fields: [appId], references: [slug], onDelete: Cascade)
   appId           String?
   secret          String?
+
+  @@unique([userId, subscriberUrl], name: "courseIdentifier")
 }
 
 model Impersonations {
@@ -472,6 +474,7 @@ enum AppCategories {
   payment
   video
   web3
+  automation
 }
 
 model App {
@@ -510,13 +513,14 @@ model App_RoutingForms_FormResponse {
   form         App_RoutingForms_Form @relation(fields: [formId], references: [id], onDelete: Cascade)
   formId       String
   response     Json
+  createdAt    DateTime              @default(now())
 
   @@unique([formFillerId, formId])
 }
 
 model Feedback {
   id      Int      @id @default(autoincrement())
-  date    DateTime
+  date    DateTime @default(now())
   userId  Int
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   rating  String
@@ -527,6 +531,7 @@ enum WorkflowTriggerEvents {
   BEFORE_EVENT
   EVENT_CANCELLED
   NEW_EVENT
+  RESCHEDULE_EVENT
 }
 
 enum WorkflowActions {
@@ -547,7 +552,6 @@ model WorkflowStep {
   emailSubject      String?
   template          WorkflowTemplates  @default(REMINDER)
   workflowReminders WorkflowReminder[]
-
 }
 
 model Workflow {
@@ -571,9 +575,9 @@ model WorkflowsOnEventTypes {
 }
 
 enum TimeUnit {
-  DAY     @map("day")
-  HOUR    @map("hour")
-  MINUTE  @map("minute")
+  DAY    @map("day")
+  HOUR   @map("hour")
+  MINUTE @map("minute")
 }
 
 model WorkflowReminder {

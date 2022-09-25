@@ -1,6 +1,10 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
-import { bookingReferenceMiddleware, credentialEncryptionMiddleware } from "./middleware";
+import {
+  bookingReferenceMiddleware,
+  credentialEncryptionMiddleware,
+  eventTypeDescriptionParseAndSanitizeMiddleware,
+} from "./middleware";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -22,6 +26,7 @@ if (process.env.NODE_ENV !== "production") {
 // If any changed on middleware server restart is required
 bookingReferenceMiddleware(prisma);
 credentialEncryptionMiddleware(prisma);
+eventTypeDescriptionParseAndSanitizeMiddleware(prisma);
 
 export default prisma;
 

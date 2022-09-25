@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from "next";
 import { JSONObject } from "superjson/dist/types";
 
-import { getLocationLabels } from "@calcom/app-store/utils";
+import { LocationObject, privacyFilteredLocations } from "@calcom/app-store/locations";
 import { parseRecurringEvent } from "@calcom/lib";
 import {
   getDefaultEvent,
@@ -11,10 +11,10 @@ import {
 } from "@calcom/lib/defaultEvents";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { bookEventTypeSelect } from "@calcom/prisma";
+import prisma from "@calcom/prisma";
 
 import { asStringOrNull, asStringOrThrow } from "@lib/asStringOrNull";
 import getBooking, { GetBookingType } from "@lib/getBooking";
-import prisma from "@lib/prisma";
 import { inferSSRProps } from "@lib/types/inferSSRProps";
 
 import BookingPage from "@components/booking/pages/BookingPage";
@@ -25,7 +25,6 @@ export type BookPageProps = inferSSRProps<typeof getServerSideProps>;
 
 export default function Book(props: BookPageProps) {
   const { t } = useLocale();
-  const locationLabels = getLocationLabels(t);
   return props.away ? (
     <div className="h-screen dark:bg-neutral-900">
       <main className="mx-auto max-w-3xl px-4 py-24">
@@ -57,9 +56,11 @@ export default function Book(props: BookPageProps) {
       </main>
     </div>
   ) : (
-    <BookingPage {...props} locationLabels={locationLabels} />
+    <BookingPage {...props} />
   );
 }
+
+Book.isThemeSupported = true;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const ssr = await ssrInit(context);
@@ -110,36 +111,30 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   if (!eventTypeRaw) return { notFound: true };
 
-  const credentials = await prisma.credential.findMany({
-    where: {
-      userId: {
-        in: users.map((user) => user.id),
-      },
-    },
-    select: {
-      id: true,
-      type: true,
-      key: true,
-    },
-  });
-
-  const web3Credentials = credentials.find((credential) => credential.type.includes("_web3"));
-
   const eventType = {
     ...eventTypeRaw,
     metadata: (eventTypeRaw.metadata || {}) as JSONObject,
     recurringEvent: parseRecurringEvent(eventTypeRaw.recurringEvent),
-    isWeb3Active:
-      web3Credentials && web3Credentials.key
-        ? (((web3Credentials.key as JSONObject).isWeb3Active || false) as boolean)
-        : false,
   };
 
   const eventTypeObject = [eventType].map((e) => {
+    let locations = eventTypeRaw.locations || [];
+    locations = privacyFilteredLocations(locations as LocationObject[]);
     return {
       ...e,
+      locations: locations,
       periodStartDate: e.periodStartDate?.toString() ?? null,
       periodEndDate: e.periodEndDate?.toString() ?? null,
+      schedulingType: null,
+      users: users.map((u) => ({
+        id: u.id,
+        name: u.name,
+        username: u.username,
+        avatar: u.avatar,
+        image: u.avatar,
+        slug: u.username,
+        theme: u.theme,
+      })),
     };
   })[0];
 

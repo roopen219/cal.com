@@ -2,9 +2,8 @@ import { MembershipRole } from "@prisma/client";
 import { SyntheticEvent, useMemo, useState } from "react";
 
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { trpc } from "@calcom/trpc/react";
 import Button from "@calcom/ui/Button";
-
-import { trpc } from "@lib/trpc";
 
 import ModalContainer from "@components/ui/ModalContainer";
 import Select from "@components/ui/form/Select";
@@ -14,6 +13,7 @@ type MembershipRoleOption = {
   value: MembershipRole;
 };
 
+/** @deprecated Use `packages/features/ee/teams/components/MemberChangeRoleModal.tsx` */
 export default function MemberChangeRoleModal(props: {
   isOpen: boolean;
   currentMember: MembershipRole;
@@ -91,7 +91,7 @@ export default function MemberChangeRoleModal(props: {
               value={role}
               onChange={(option) => option && setRole(option)}
               id="role"
-              className="mt-1 block w-full rounded-md border-gray-300 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 text-sm"
             />
           </div>
           {errorMessage && (

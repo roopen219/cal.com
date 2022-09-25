@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import prisma from "@calcom/prisma";
+
 import { getSession } from "@lib/auth";
-import prisma from "@lib/prisma";
 import { defaultAvatarSrc } from "@lib/profile";
 
 /**
@@ -14,8 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
-  const user = await prisma.user.findUnique({
-    rejectOnNotFound: true,
+  const user = await prisma.user.findUniqueOrThrow({
     where: {
       id: session.user.id,
     },

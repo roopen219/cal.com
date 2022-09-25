@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import { getTeamWithMembers } from "@calcom/lib/server/queries/teams";
+import { closeComDeleteTeam } from "@calcom/lib/sync/SyncServiceManager";
+import prisma from "@calcom/prisma";
+
 import { getSession } from "@lib/auth";
-import prisma from "@lib/prisma";
-import { getTeamWithMembers } from "@lib/queries/teams";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req: req });
@@ -44,11 +46,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         userId_teamId: { userId: session.user.id, teamId },
       },
     });
-    await prisma.team.delete({
+    const deletedTeam = await prisma.team.delete({
       where: {
         id: teamId,
       },
     });
+
+    // Sync Services: Close.com
+    closeComDeleteTeam(deletedTeam);
+
     return res.status(204).send(null);
   }
 }

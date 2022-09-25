@@ -1,12 +1,10 @@
-import { ArrowRightIcon } from "@heroicons/react/outline";
-import { BadgeCheckIcon } from "@heroicons/react/solid";
 import { UserPlan } from "@prisma/client";
 import classNames from "classnames";
 import { GetServerSidePropsContext } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { JSONObject } from "superjson/dist/types";
 
@@ -16,6 +14,7 @@ import {
   useEmbedStyles,
   useIsEmbed,
 } from "@calcom/embed-core/embed-iframe";
+import CustomBranding from "@calcom/lib/CustomBranding";
 import defaultEvents, {
   getDynamicEventDescription,
   getGroupName,
@@ -23,76 +22,70 @@ import defaultEvents, {
   getUsernameSlugLink,
 } from "@calcom/lib/defaultEvents";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import useTheme from "@calcom/lib/hooks/useTheme";
+import { collectPageParameters, telemetryEventTypes, useTelemetry } from "@calcom/lib/telemetry";
+import prisma from "@calcom/prisma";
 import { baseEventTypeSelect } from "@calcom/prisma/selects";
+import { BadgeCheckIcon, Icon } from "@calcom/ui/Icon";
 
 import { useExposePlanGlobally } from "@lib/hooks/useExposePlanGlobally";
-import useTheme from "@lib/hooks/useTheme";
-import prisma from "@lib/prisma";
-import { collectPageParameters, telemetryEventTypes, useTelemetry } from "@lib/telemetry";
 import { inferSSRProps } from "@lib/types/inferSSRProps";
 
-import CustomBranding from "@components/CustomBranding";
 import AvatarGroup from "@components/ui/AvatarGroup";
 import { AvatarSSR } from "@components/ui/AvatarSSR";
 
 import { ssrInit } from "@server/lib/ssr";
 
-const EventTypeDescription = dynamic(() => import("@components/eventtype/EventTypeDescription"));
+const EventTypeDescription = dynamic(() => import("@calcom/ui/v2/modules/event-types/EventTypeDescription"));
 const HeadSeo = dynamic(() => import("@components/seo/head-seo"));
-const CryptoSection = dynamic(() => import("../ee/components/web3/CryptoSection"));
-
-interface EvtsToVerify {
-  [evtId: string]: boolean;
-}
-
 export default function User(props: inferSSRProps<typeof getServerSideProps>) {
   const { users, profile, eventTypes, isDynamicGroup, dynamicNames, dynamicUsernames, isSingleUser } = props;
   const [user] = users; //To be used when we only have a single user, not dynamic group
-  const { Theme } = useTheme(user.theme);
+  useTheme(user.theme);
   const { t } = useLocale();
   const router = useRouter();
 
-  const groupEventTypes =
-    /* props.users.some((user) => !user.allowDynamicBooking) TODO: Re-enable after v1.7 launch */ true ? (
-      <div className="space-y-6" data-testid="event-types">
-        <div className="overflow-hidden rounded-sm border dark:border-gray-900">
-          <div className="p-8 text-center text-gray-400 dark:text-white">
-            <h2 className="font-cal mb-2 text-3xl text-gray-600 dark:text-white">{" " + t("unavailable")}</h2>
-            <p className="mx-auto max-w-md">{t("user_dynamic_booking_disabled") as string}</p>
-          </div>
+  const groupEventTypes = props.users.some((user) => !user.allowDynamicBooking) ? (
+    <div className="space-y-6" data-testid="event-types">
+      <div className="overflow-hidden rounded-sm border dark:border-gray-900">
+        <div className="p-8 text-center text-gray-400 dark:text-white">
+          <h2 className="font-cal mb-2 text-3xl text-gray-600 dark:text-white">{" " + t("unavailable")}</h2>
+          <p className="mx-auto max-w-md">{t("user_dynamic_booking_disabled") as string}</p>
         </div>
       </div>
-    ) : (
-      <ul className="space-y-3">
-        {eventTypes.map((type, index) => (
-          <li
-            key={index}
-            className="hover:border-brand group relative rounded-sm border border-neutral-200 bg-white hover:bg-gray-50 dark:border-neutral-700 dark:bg-gray-800 dark:hover:border-neutral-600">
-            <ArrowRightIcon className="absolute right-3 top-3 h-4 w-4 text-black opacity-0 transition-opacity group-hover:opacity-100 dark:text-white" />
-            <Link href={getUsernameSlugLink({ users: props.users, slug: type.slug })}>
-              <a className="flex justify-between px-6 py-4" data-testid="event-type-link">
-                <div className="flex-shrink">
-                  <h2 className="font-cal font-semibold text-neutral-900 dark:text-white">{type.title}</h2>
-                  <EventTypeDescription className="text-sm" eventType={type} />
-                </div>
-                <div className="mt-1 self-center">
-                  <AvatarGroup
-                    border="border-2 border-white"
-                    truncateAfter={4}
-                    className="flex flex-shrink-0"
-                    size={10}
-                    items={props.users.map((user) => ({
-                      alt: user.name || "",
-                      image: user.avatar || "",
-                    }))}
-                  />
-                </div>
-              </a>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    );
+    </div>
+  ) : (
+    <ul>
+      {eventTypes.map((type, index) => (
+        <li
+          key={index}
+          className="dark:bg-darkgray-100 dark:border-darkgray-200 group relative rounded-sm border border-neutral-200 bg-white dark:hover:border-neutral-600">
+          <Icon.FiArrowRight className="absolute right-3 top-3 h-4 w-4 text-black opacity-0 transition-opacity group-hover:opacity-100 dark:text-white" />
+          <Link href={getUsernameSlugLink({ users: props.users, slug: type.slug })}>
+            <a className="flex justify-between px-6 py-4" data-testid="event-type-link">
+              <div className="flex-shrink">
+                <p className="dark:text-darkgray-700 text-sm font-semibold text-neutral-900">{type.title}</p>
+                <EventTypeDescription className="text-sm" eventType={type} />
+              </div>
+              <div className="mt-1 self-center">
+                <AvatarGroup
+                  border="border-2 border-white"
+                  truncateAfter={4}
+                  className="flex flex-shrink-0"
+                  size={10}
+                  items={props.users.map((user) => ({
+                    alt: user.name || "",
+                    image: user.avatar || "",
+                  }))}
+                />
+              </div>
+            </a>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+
   const isEmbed = useIsEmbed();
   const eventTypeListItemEmbedStyles = useEmbedStyles("eventTypeListItem");
   const shouldAlignCentrallyInEmbed = useEmbedNonStylesConfig("align") !== "left";
@@ -101,7 +94,6 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
   delete query.user; // So it doesn't display in the Link (and make tests fail)
   useExposePlanGlobally("PRO");
   const nameOrUsername = user.name || user.username || "";
-  const [evtsToVerify, setEvtsToVerify] = useState<EvtsToVerify>({});
   const telemetry = useTelemetry();
 
   useEffect(() => {
@@ -113,7 +105,6 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
 
   return (
     <>
-      <Theme />
       <HeadSeo
         title={isDynamicGroup ? dynamicNames.join(", ") : nameOrUsername}
         description={
@@ -125,12 +116,17 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
       />
       <CustomBranding lightVal={profile.brandColor} darkVal={profile.darkBrandColor} />
 
-      <div className={classNames(shouldAlignCentrally ? "mx-auto" : "", isEmbed ? "max-w-3xl" : "")}>
+      <div
+        className={classNames(
+          shouldAlignCentrally ? "mx-auto" : "",
+          isEmbed ? "max-w-3xl" : "",
+          "dark:bg-darkgray-50"
+        )}>
         <main
           className={classNames(
             shouldAlignCentrally ? "mx-auto" : "",
             isEmbed
-              ? " border-bookinglightest  rounded-md border bg-white dark:bg-neutral-900 sm:dark:border-gray-600"
+              ? " border-bookinglightest  dark:bg-darkgray-50 rounded-md border bg-white sm:dark:border-gray-600"
               : "",
             "max-w-3xl py-24 px-4"
           )}>
@@ -143,10 +139,12 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
                   <BadgeCheckIcon className="mx-1 -mt-1 inline h-6 w-6 text-blue-500 dark:text-white" />
                 )}
               </h1>
-              <p className="text-neutral-500 dark:text-white">{user.bio}</p>
+              <p className="dark:text-darkgray-600 text-s text-neutral-500">{user.bio}</p>
             </div>
           )}
-          <div className="space-y-6" data-testid="event-types">
+          <div
+            className="rounded-md border border-neutral-200 dark:border-neutral-700 dark:hover:border-neutral-600"
+            data-testid="event-types">
             {user.away ? (
               <div className="overflow-hidden rounded-sm border dark:border-gray-900">
                 <div className="p-8 text-center text-gray-400 dark:text-white">
@@ -163,8 +161,8 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
                 <div
                   key={type.id}
                   style={{ display: "flex", ...eventTypeListItemEmbedStyles }}
-                  className="hover:border-brand group relative rounded-sm border border-neutral-200 bg-white hover:bg-gray-50 dark:border-neutral-700 dark:bg-gray-800 dark:hover:border-neutral-600">
-                  <ArrowRightIcon className="absolute right-3 top-3 h-4 w-4 text-black opacity-0 transition-opacity group-hover:opacity-100 dark:text-white" />
+                  className="dark:bg-darkgray-100 group relative border-b border-neutral-200 bg-white  first:rounded-t-md last:rounded-b-md last:border-b-0 hover:bg-gray-50 dark:border-neutral-700 dark:hover:border-neutral-600">
+                  <Icon.FiArrowRight className="absolute right-4 top-4 h-4 w-4 text-black opacity-0 transition-opacity group-hover:opacity-100 dark:text-white" />
                   {/* Don't prefetch till the time we drop the amount of javascript in [user][type] page which is impacting score for [user] page */}
                   <Link
                     prefetch={false}
@@ -173,37 +171,22 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
                       query,
                     }}>
                     <a
-                      onClick={async (e) => {
-                        // If a token is required for this event type, add a click listener that checks whether the user verified their wallet or not
-                        if (type.metadata.smartContractAddress && !evtsToVerify[type.id]) {
-                          const showToast = (await import("@calcom/lib/notification")).default;
-                          e.preventDefault();
-                          showToast(
-                            "You must verify a wallet with a token belonging to the specified smart contract first",
-                            "error"
-                          );
-                        } else {
-                          sdkActionManager?.fire("eventTypeSelected", {
-                            eventType: type,
-                          });
-                        }
+                      onClick={async () => {
+                        sdkActionManager?.fire("eventTypeSelected", {
+                          eventType: type,
+                        });
                       }}
-                      className="block w-full px-6 py-4"
+                      className="block w-full p-5"
                       data-testid="event-type-link">
-                      <h2 className="grow font-semibold text-neutral-900 dark:text-white">{type.title}</h2>
+                      <div className="flex flex-wrap items-center">
+                        <h2 className="dark:text-darkgray-700 pr-2 text-sm font-semibold text-gray-700">
+                          {type.title}
+                        </h2>
+                        <p className="dark:text-darkgray-600 hidden text-sm font-normal leading-none text-gray-600 md:block">{`/${user.username}/${type.slug}`}</p>
+                      </div>
                       <EventTypeDescription eventType={type} />
                     </a>
                   </Link>
-                  {type.isWeb3Active && type.metadata.smartContractAddress && (
-                    <CryptoSection
-                      id={type.id}
-                      pathname={`/${user.username}/${type.slug}`}
-                      smartContractAddress={type.metadata.smartContractAddress as string}
-                      verified={evtsToVerify[type.id]}
-                      setEvtsToVerify={setEvtsToVerify}
-                      oneStep
-                    />
-                  )}
                 </div>
               ))
             )}
@@ -224,6 +207,7 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
     </>
   );
 }
+User.isThemeSupported = true;
 
 const getEventTypesWithHiddenFromDB = async (userId: number, plan: UserPlan) => {
   return await prisma.eventType.findMany({
@@ -260,7 +244,6 @@ const getEventTypesWithHiddenFromDB = async (userId: number, plan: UserPlan) => 
       metadata: true,
       ...baseEventTypeSelect,
     },
-    take: plan === UserPlan.FREE ? 1 : undefined,
   });
 };
 
@@ -326,21 +309,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         brandColor: user.brandColor,
         darkBrandColor: user.darkBrandColor,
       };
-  const usersIds = users.map((user) => user.id);
-  const credentials = await prisma.credential.findMany({
-    where: {
-      userId: {
-        in: usersIds,
-      },
-    },
-    select: {
-      id: true,
-      type: true,
-      key: true,
-    },
-  });
-
-  const web3Credentials = credentials.find((credential) => credential.type.includes("_web3"));
 
   const eventTypesWithHidden = isDynamicGroup ? [] : await getEventTypesWithHiddenFromDB(user.id, user.plan);
   const dataFetchEnd = Date.now();
@@ -352,10 +320,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const eventTypes = eventTypesRaw.map((eventType) => ({
     ...eventType,
     metadata: (eventType.metadata || {}) as JSONObject,
-    isWeb3Active:
-      web3Credentials && web3Credentials.key
-        ? (((web3Credentials.key as JSONObject).isWeb3Active || false) as boolean)
-        : false,
   }));
 
   const isSingleUser = users.length === 1;

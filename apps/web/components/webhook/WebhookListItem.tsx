@@ -1,18 +1,17 @@
-import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
-
 import classNames from "@calcom/lib/classNames";
+import { inferQueryOutput, trpc } from "@calcom/trpc/react";
 import Button from "@calcom/ui/Button";
+import ConfirmationDialogContent from "@calcom/ui/ConfirmationDialogContent";
 import { Dialog, DialogTrigger } from "@calcom/ui/Dialog";
+import { Icon } from "@calcom/ui/Icon";
+import { ListItem } from "@calcom/ui/List";
 import { Tooltip } from "@calcom/ui/Tooltip";
 
 import { useLocale } from "@lib/hooks/useLocale";
-import { inferQueryOutput, trpc } from "@lib/trpc";
-
-import { ListItem } from "@components/List";
-import ConfirmationDialogContent from "@components/dialog/ConfirmationDialogContent";
 
 export type TWebhook = inferQueryOutput<"viewer.webhook.list">[number];
 
+/** @deprecated Moved to `packages/features/webhooks` */
 export default function WebhookListItem(props: { webhook: TWebhook; onEditWebhook: () => void }) {
   const { t } = useLocale();
   const utils = trpc.useContext();
@@ -56,7 +55,7 @@ export default function WebhookListItem(props: { webhook: TWebhook; onEditWebhoo
               onClick={() => props.onEditWebhook()}
               color="minimal"
               size="icon"
-              StartIcon={PencilAltIcon}
+              StartIcon={Icon.FiEdit2}
               className="ml-4 w-full self-center p-2"
             />
           </Tooltip>
@@ -67,9 +66,9 @@ export default function WebhookListItem(props: { webhook: TWebhook; onEditWebhoo
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
-                  color="minimal"
                   size="icon"
-                  StartIcon={TrashIcon}
+                  color="warn"
+                  StartIcon={Icon.FiTrash}
                   className="ml-2 w-full self-center p-2"
                 />
               </DialogTrigger>

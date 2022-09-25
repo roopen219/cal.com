@@ -1,14 +1,15 @@
-import { BookingStatus, MembershipRole, Prisma, UserPlan } from "@prisma/client";
+import { BookingStatus, MembershipRole, Prisma, UserPermissionRole, UserPlan } from "@prisma/client";
 import { uuid } from "short-uuid";
 
+import dailyMeta from "@calcom/app-store/dailyvideo/_metadata";
+import googleMeetMeta from "@calcom/app-store/googlevideo/_metadata";
+import zoomMeta from "@calcom/app-store/zoomvideo/_metadata";
 import dayjs from "@calcom/dayjs";
 import { hashPassword } from "@calcom/lib/auth";
 import { DEFAULT_SCHEDULE, getAvailabilityFromSchedule } from "@calcom/lib/availability";
 
 import prisma from ".";
-import "./seed-app-store";
-
-require("dotenv").config({ path: "../../.env" });
+import mainAppStore from "./seed-app-store";
 
 async function createUserAndEventType(opts: {
   user: {
@@ -19,6 +20,7 @@ async function createUserAndEventType(opts: {
     name: string;
     completedOnboarding?: boolean;
     timeZone?: string;
+    role?: UserPermissionRole;
   };
   eventTypes: Array<
     Prisma.EventTypeCreateInput & {
@@ -87,7 +89,7 @@ async function createUserAndEventType(opts: {
     });
 
     console.log(
-      `\t📆 Event type ${eventTypeData.slug}, length ${eventTypeData.length}min - ${process.env.NEXT_PUBLIC_WEBAPP_URL}/${user.username}/${eventTypeData.slug}`
+      `\t📆 Event type ${eventTypeData.slug} with id ${id}, length ${eventTypeData.length}min - ${process.env.NEXT_PUBLIC_WEBAPP_URL}/${user.username}/${eventTypeData.slug}`
     );
     for (const bookingInput of bookingInputs) {
       await prisma.booking.create({
@@ -263,19 +265,19 @@ async function main() {
         title: "Zoom Event",
         slug: "zoom",
         length: 60,
-        locations: [{ type: "integrations:zoom" }],
+        locations: [{ type: zoomMeta.appData?.location.type }],
       },
       {
         title: "Daily Event",
         slug: "daily",
         length: 60,
-        locations: [{ type: "integrations:daily" }],
+        locations: [{ type: dailyMeta.appData?.location.type }],
       },
       {
         title: "Google Meet",
         slug: "google-meet",
         length: 60,
-        locations: [{ type: "integrations:google:meet" }],
+        locations: [{ type: googleMeetMeta.appData?.location.type }],
       },
       {
         title: "Yoga class",
@@ -469,6 +471,18 @@ async function main() {
     eventTypes: [],
   });
 
+  await createUserAndEventType({
+    user: {
+      email: "admin@example.com",
+      password: "admin",
+      username: "admin",
+      name: "Admin Example",
+      plan: "PRO",
+      role: "ADMIN",
+    },
+    eventTypes: [],
+  });
+
   const pro2UserTeam = await createUserAndEventType({
     user: {
       email: "teampro2@example.com",
@@ -537,6 +551,7 @@ async function main() {
       {
         id: pro2UserTeam.id,
         username: pro2UserTeam.name || "Unknown",
+        role: "MEMBER",
       },
       {
         id: pro3UserTeam.id,
@@ -551,6 +566,7 @@ async function main() {
 }
 
 main()
+  .then(() => mainAppStore())
   .catch((e) => {
     console.error(e);
     process.exit(1);

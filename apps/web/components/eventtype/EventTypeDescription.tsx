@@ -1,11 +1,3 @@
-import {
-  ClipboardCheckIcon,
-  ClockIcon,
-  CreditCardIcon,
-  RefreshIcon,
-  UserIcon,
-  UsersIcon,
-} from "@heroicons/react/solid";
 import { Prisma, SchedulingType } from "@prisma/client";
 import { useMemo } from "react";
 import { FormattedNumber, IntlProvider } from "react-intl";
@@ -13,6 +5,7 @@ import { FormattedNumber, IntlProvider } from "react-intl";
 import { parseRecurringEvent } from "@calcom/lib";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { baseEventTypeSelect } from "@calcom/prisma/selects";
+import { Icon } from "@calcom/ui/Icon";
 
 import classNames from "@lib/classNames";
 
@@ -37,33 +30,33 @@ export const EventTypeDescription = ({ eventType, className }: EventTypeDescript
 
   return (
     <>
-      <div className={classNames("text-gray-500 dark:text-white", className)}>
+      <div className={classNames("text-gray-600 dark:text-white", className)}>
         {eventType.description && (
-          <h2 className="max-w-[280px] overflow-hidden text-ellipsis opacity-60 sm:max-w-[500px]">
+          <h2 className="max-w-[280px] overflow-hidden text-ellipsis sm:max-w-[500px]">
             {eventType.description.substring(0, 100)}
             {eventType.description.length > 100 && "..."}
           </h2>
         )}
         <ul className="mt-2 flex flex-wrap sm:flex-nowrap">
           <li className="mr-4 mb-1 flex items-center whitespace-nowrap text-gray-500">
-            <ClockIcon className="mr-1.5 inline h-4 w-4 text-gray-500" aria-hidden="true" />
-            {eventType.length}m
+            <Icon.FiClock className="mr-1.5 inline h-3 w-3" aria-hidden="true" />
+            {eventType.length} {t("minutes")}
           </li>
           {eventType.schedulingType ? (
             <li className="mr-4 mb-1 flex items-center whitespace-nowrap text-gray-500">
-              <UsersIcon className="mr-1.5 inline h-4 w-4 text-gray-500" aria-hidden="true" />
+              <Icon.FiUsers className="mr-1.5 inline h-3 w-3" aria-hidden="true" />
               {eventType.schedulingType === SchedulingType.ROUND_ROBIN && t("round_robin")}
               {eventType.schedulingType === SchedulingType.COLLECTIVE && t("collective")}
             </li>
           ) : (
             <li className="mr-4 mb-1 flex items-center whitespace-nowrap text-gray-500">
-              <UserIcon className="mr-1.5 inline h-4 w-4 text-gray-500" aria-hidden="true" />
+              <Icon.FiUser className="mr-1.5 inline h-3 w-3" aria-hidden="true" />
               {t("1_on_1")}
             </li>
           )}
           {recurringEvent?.count && recurringEvent.count > 0 && (
             <li className="mr-4 mb-1 flex items-center whitespace-nowrap text-gray-500">
-              <RefreshIcon className="mr-1.5 inline h-4 w-4 text-gray-500" aria-hidden="true" />
+              <Icon.FiRefreshCw className="mr-1.5 inline h-3 w-3" aria-hidden="true" />
               {t("repeats_up_to", {
                 count: recurringEvent.count,
               })}
@@ -71,7 +64,7 @@ export const EventTypeDescription = ({ eventType, className }: EventTypeDescript
           )}
           {eventType.price > 0 && (
             <li className="mr-4 mb-1 flex items-center whitespace-nowrap text-gray-500">
-              <CreditCardIcon className="mr-1.5 inline h-4 w-4 text-gray-500" aria-hidden="true" />
+              <Icon.FiCreditCard className="mr-1.5 inline h-3 w-3" aria-hidden="true" />
               <IntlProvider locale="en">
                 <FormattedNumber
                   value={eventType.price / 100.0}
@@ -83,7 +76,7 @@ export const EventTypeDescription = ({ eventType, className }: EventTypeDescript
           )}
           {eventType.requiresConfirmation && (
             <li className="mr-4 mb-1 flex items-center whitespace-nowrap text-gray-500">
-              <ClipboardCheckIcon className="mr-1.5 inline h-4 w-4 text-gray-500" aria-hidden="true" />
+              <Icon.FiCheckSquare className="mr-1.5 inline h-3 w-3" aria-hidden="true" />
               {t("requires_confirmation")}
             </li>
           )}

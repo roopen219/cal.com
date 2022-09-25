@@ -2,13 +2,13 @@ import { UserPlan } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { JSONObject } from "superjson/dist/types";
 
+import { privacyFilteredLocations, LocationObject } from "@calcom/core/location";
 import { parseRecurringEvent } from "@calcom/lib";
+import prisma from "@calcom/prisma";
 
 import { asStringOrNull } from "@lib/asStringOrNull";
 import { getWorkingHours } from "@lib/availability";
 import getBooking, { GetBookingType } from "@lib/getBooking";
-import { locationHiddenFilter, LocationObject } from "@lib/location";
-import prisma from "@lib/prisma";
 import { inferSSRProps } from "@lib/types/inferSSRProps";
 
 import AvailabilityPage from "@components/booking/pages/AvailabilityPage";
@@ -20,6 +20,7 @@ export type AvailabilityTeamPageProps = inferSSRProps<typeof getServerSideProps>
 export default function TeamType(props: AvailabilityTeamPageProps) {
   return <AvailabilityPage {...props} />;
 }
+TeamType.isThemeSupported = true;
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const slugParam = asStringOrNull(context.query.slug);
@@ -48,6 +49,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         select: {
           id: true,
           slug: true,
+          hidden: true,
           users: {
             select: {
               id: true,
@@ -114,13 +116,20 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   eventType.schedule = null;
 
   const locations = eventType.locations ? (eventType.locations as LocationObject[]) : [];
-
+  console.log("locations", locations);
   const eventTypeObject = Object.assign({}, eventType, {
     metadata: (eventType.metadata || {}) as JSONObject,
     periodStartDate: eventType.periodStartDate?.toString() ?? null,
     periodEndDate: eventType.periodEndDate?.toString() ?? null,
     recurringEvent: parseRecurringEvent(eventType.recurringEvent),
-    locations: locationHiddenFilter(locations),
+    locations: privacyFilteredLocations(locations),
+    users: eventType.users.map((user) => ({
+      name: user.name,
+      username: user.username,
+      hideBranding: user.hideBranding,
+      plan: user.plan,
+      timeZone: user.timeZone,
+    })),
   });
 
   eventTypeObject.availability = [];

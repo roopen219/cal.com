@@ -2,8 +2,9 @@ import { mapValues, pick, toNumber } from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { v4 } from "uuid";
 
+import prisma from "@calcom/prisma";
+
 import verifyAdminToken from "@lib/auth/verifyAdminToken";
-import prisma from "@lib/prisma";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {

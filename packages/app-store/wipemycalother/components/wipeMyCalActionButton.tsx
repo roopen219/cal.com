@@ -1,17 +1,17 @@
 import { useState } from "react";
 
-import Button from "@calcom/ui/Button";
+import { trpc } from "@calcom/trpc/react";
+import Button from "@calcom/ui/v2/core/Button";
 
 import { ConfirmDialog } from "./confirmDialog";
 
 interface IWipeMyCalActionButtonProps {
-  trpc: any;
   bookingsEmpty: boolean;
-  bookingStatus: "upcoming" | "recurring" | "past" | "cancelled";
+  bookingStatus: "upcoming" | "recurring" | "past" | "cancelled" | "unconfirmed";
 }
 
 const WipeMyCalActionButton = (props: IWipeMyCalActionButtonProps) => {
-  const { trpc, bookingsEmpty, bookingStatus } = props;
+  const { bookingsEmpty, bookingStatus } = props;
   const [openDialog, setOpenDialog] = useState(false);
   const { isSuccess, isLoading, data } = trpc.useQuery([
     "viewer.integrations",
@@ -21,23 +21,21 @@ const WipeMyCalActionButton = (props: IWipeMyCalActionButtonProps) => {
   if (bookingStatus !== "upcoming" || bookingsEmpty) {
     return <></>;
   }
-  const wipeMyCalCredentials: { credentialIds: number[] } = data?.items.find(
-    (item: { type: string }) => item.type === "wipemycal_other"
-  );
+  const wipeMyCalCredentials = data?.items.find((item: { type: string }) => item.type === "wipemycal_other");
 
   const [credentialId] = wipeMyCalCredentials?.credentialIds || [false];
 
   return (
-    <div>
+    <>
       {data && isSuccess && !isLoading && credentialId && (
-        <>
-          <ConfirmDialog trpc={trpc} isOpenDialog={openDialog} setIsOpenDialog={setOpenDialog} />
-          <Button onClick={() => setOpenDialog(true)} data-testid="wipe-today-button">
+        <div className="mb-4">
+          <ConfirmDialog isOpenDialog={openDialog} setIsOpenDialog={setOpenDialog} />
+          <Button color="primary" onClick={() => setOpenDialog(true)} data-testid="wipe-today-button">
             Wipe Today
           </Button>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

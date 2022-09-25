@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-
-import { trpc } from "@lib/trpc";
+import { DestinationCalendar } from "@calcom/prisma/client";
+import { trpc } from "@calcom/trpc/react";
 
 interface Props {
   onChange: (value: { externalId: string; integration: string }) => void;
@@ -12,6 +12,7 @@ interface Props {
   hidePlaceholder?: boolean;
   /** The external Id of the connected calendar */
   value: string | undefined;
+  destinationCalendar?: DestinationCalendar | null;
 }
 
 const DestinationCalendarSelector = ({
@@ -19,6 +20,7 @@ const DestinationCalendarSelector = ({
   isLoading,
   value,
   hidePlaceholder,
+  destinationCalendar,
 }: Props): JSX.Element | null => {
   const { t } = useLocale();
   const query = trpc.useQuery(["viewer.connectedCalendars"]);
@@ -68,11 +70,26 @@ const DestinationCalendarSelector = ({
           value: `${cal.integration}:${cal.externalId}`,
         })),
     })) ?? [];
+  const defaultCalendarSelectedString = destinationCalendar?.externalId
+    ? `(${
+        destinationCalendar.externalId.length > 15
+          ? destinationCalendar.externalId.substring(0, 15) + "..."
+          : destinationCalendar.externalId
+      })`
+    : "";
   return (
     <div className="relative" title={`${t("select_destination_calendar")}: ${selectedOption?.label || ""}`}>
       <Select
         name="primarySelectedCalendar"
-        placeholder={!hidePlaceholder ? `${t("select_destination_calendar")}:` : undefined}
+        placeholder={
+          !hidePlaceholder ? (
+            `${t("select_destination_calendar")}`
+          ) : (
+            <span className="whitespace-nowrap">
+              {t("default_calendar_selected")} {defaultCalendarSelectedString}
+            </span>
+          )
+        }
         options={options}
         styles={{
           placeholder: (styles) => ({ ...styles, ...content(hidePlaceholder) }),
@@ -90,17 +107,17 @@ const DestinationCalendarSelector = ({
           control: (defaultStyles) => {
             return {
               ...defaultStyles,
-              borderRadius: "2px",
+              borderRadius: "6px",
               "@media only screen and (min-width: 640px)": {
                 ...(defaultStyles["@media only screen and (min-width: 640px)"] as object),
-                maxWidth: "320px",
+                width: "100%",
               },
             };
           },
         }}
         isSearchable={false}
         className={classNames(
-          "mt-1 mb-2 block w-full min-w-0 flex-1 rounded-none rounded-r-sm border-gray-300 sm:text-sm",
+          "mt-1 mb-2 block w-full min-w-0 flex-1 rounded-none rounded-r-sm border-gray-300 text-sm",
           !hidePlaceholder && "font-medium"
         )}
         onChange={(option) => {
@@ -119,6 +136,9 @@ const DestinationCalendarSelector = ({
         }}
         isLoading={isLoading}
         value={selectedOption}
+        components={{
+          IndicatorSeparator: () => null,
+        }}
       />
     </div>
   );

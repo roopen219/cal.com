@@ -24,7 +24,7 @@ const MinutesField = forwardRef<HTMLInputElement, Props>(({ label, ...rest }, re
             className={classNames("sellular-input sellular-input--text block w-full !pr-12", rest.className)}
           />
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-            <span className="text-gray-500 sm:text-sm" id="duration">
+            <span className="text-sm text-gray-500" id="duration">
               mins
             </span>
           </div>

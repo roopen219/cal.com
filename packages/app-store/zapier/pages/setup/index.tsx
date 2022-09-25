@@ -6,10 +6,8 @@ import { Toaster } from "react-hot-toast";
 
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import showToast from "@calcom/lib/notification";
+import { trpc } from "@calcom/trpc/react";
 import { Button, Loader, Tooltip } from "@calcom/ui";
-
-/** TODO: Maybe extract this into a package to prevent circular dependencies */
-import { trpc } from "@calcom/web/lib/trpc";
 
 export interface IZapierSetupProps {
   inviteLink: string;
@@ -21,11 +19,7 @@ export default function ZapierSetup(props: IZapierSetupProps) {
   const [newApiKey, setNewApiKey] = useState("");
   const { t } = useLocale();
   const utils = trpc.useContext();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const integrations = trpc.useQuery(["viewer.integrations", { variant: "other" }]);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const oldApiKey = trpc.useQuery(["viewer.apiKeys.findKeyOfType", { appId: ZAPIER }]);
 
   const deleteApiKey = trpc.useMutation("viewer.apiKeys.delete");
@@ -38,8 +32,6 @@ export default function ZapierSetup(props: IZapierSetupProps) {
 
   async function createApiKey() {
     const event = { note: "Zapier", expiresAt: null, appId: ZAPIER };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const apiKey = await utils.client.mutation("viewer.apiKeys.create", event);
     if (oldApiKey.data) {
       deleteApiKey.mutate({
@@ -60,12 +52,12 @@ export default function ZapierSetup(props: IZapierSetupProps) {
   return (
     <div className="flex h-screen bg-gray-200">
       {showContent ? (
-        <div className="m-auto rounded bg-white p-10">
-          <div className="flex flex-row">
-            <div className="mr-5">
+        <div className="m-auto max-w-[43em] overflow-auto rounded bg-white pb-10 md:p-10">
+          <div className="md:flex md:flex-row">
+            <div className="invisible md:visible">
               <img className="h-11" src="/api/app-store/zapier/icon.svg" alt="Zapier Logo" />
             </div>
-            <div className="ml-5">
+            <div className="ml-2 mr-2 md:ml-5">
               <div className="text-gray-600">{t("setting_up_zapier")}</div>
               {!newApiKey ? (
                 <>
@@ -78,15 +70,15 @@ export default function ZapierSetup(props: IZapierSetupProps) {
                 <>
                   <div className="mt-1 text-xl">{t("your_unique_api_key")}</div>
                   <div className="my-2 mt-3 flex">
-                    <div className="mr-1 w-full rounded bg-gray-100 p-3 pr-5">{newApiKey}</div>
-                    <Tooltip side="top" content="copy to clipboard">
+                    <div className="w-full rounded bg-gray-100 py-2 pl-2 pr-5">{newApiKey}</div>
+                    <Tooltip side="top" content="copy">
                       <Button
                         onClick={() => {
                           navigator.clipboard.writeText(newApiKey);
                           showToast(t("api_key_copied"), "success");
                         }}
                         type="button"
-                        className="px-4 text-base ">
+                        className="rounded-l-none px-4 text-base">
                         <ClipboardCopyIcon className="mr-2 h-5 w-5 text-neutral-100" />
                         {t("copy")}
                       </Button>

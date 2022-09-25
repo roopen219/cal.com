@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import showToast from "@calcom/lib/notification";
+import { trpc } from "@calcom/trpc/react";
 import { Alert } from "@calcom/ui/Alert";
 import Button from "@calcom/ui/Button";
 import {
@@ -13,12 +14,12 @@ import {
 } from "@calcom/ui/Dialog";
 
 import { useLocale } from "@lib/hooks/useLocale";
-import { trpc } from "@lib/trpc";
 
 interface Props {
   teamId: number;
 }
 
+/** @deprecated Use `packages/features/ee/teams/components/UpgradeToFlexibleProModal.tsx` */
 export function UpgradeToFlexibleProModal(props: Props) {
   const { t } = useLocale();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

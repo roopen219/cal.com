@@ -5,12 +5,13 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
+import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { collectPageParameters, telemetryEventTypes, useTelemetry } from "@calcom/lib/telemetry";
+import prisma from "@calcom/prisma";
 
 import { ErrorCode, getSession } from "@lib/auth";
-import { WEBAPP_URL, WEBSITE_URL } from "@lib/config/constants";
-import { useLocale } from "@lib/hooks/useLocale";
+import { WEBAPP_URL } from "@lib/config/constants";
 import { hostedCal, isSAMLLoginEnabled, samlProductID, samlTenantID } from "@lib/saml";
-import { collectPageParameters, telemetryEventTypes, useTelemetry } from "@lib/telemetry";
 import { inferSSRProps } from "@lib/types/inferSSRProps";
 
 import { IS_GOOGLE_LOGIN_ENABLED } from "@server/lib/constants";
@@ -82,6 +83,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
       redirect: {
         destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  const userCount = await prisma.user.count();
+  if (userCount === 0) {
+    // Proceed to new onboarding to create first admin user
+    return {
+      redirect: {
+        destination: "/auth/setup",
         permanent: false,
       },
     };

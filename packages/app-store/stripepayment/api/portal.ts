@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { getStripeCustomerIdFromUserId } from "@calcom/stripe/customer";
-import stripe from "@calcom/stripe/server";
+import { getStripeCustomerIdFromUserId } from "../lib/customer";
+import stripe from "../lib/server";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "POST") {
+  if (req.method === "POST" || req.method === "GET") {
     const customerId = await getStripeCustomerIdFromUserId(req.session!.user.id);
 
     if (!customerId) {
