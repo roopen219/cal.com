@@ -93,8 +93,8 @@ export default function Availability({ schedule }: { schedule: number }) {
       ))}
       CTA={
         <div className="flex items-center justify-end">
-          <div className="flex items-center rounded-md px-2 sm:hover:bg-gray-100">
-            <Label htmlFor="hiddenSwitch" className="mt-2 hidden cursor-pointer self-center pr-2 sm:inline">
+          <div className="flex items-center">
+            <Label htmlFor="hiddenSwitch" className="mt-1 inline cursor-pointer self-center pr-2">
               {t("set_to_default")}
             </Label>
             <Switch
@@ -128,9 +128,9 @@ export default function Availability({ schedule }: { schedule: number }) {
                 ...values,
               });
             }}
-            className="-mx-4 flex flex-col pb-16 sm:mx-0 xl:flex-row xl:space-x-6">
+            className="-mx-4 mx-0 flex flex-row space-x-6 pb-16">
             <div className="flex-1">
-              <div className="rounded-md border-gray-200 bg-white py-5 pr-4 sm:border sm:p-6">
+              <div className="border-gray-200 bg-white p-6 py-5 pr-4 sm:border">
                 <h3 className="mb-5 text-base font-medium leading-6 text-gray-900">
                   {t("change_start_end")}
                 </h3>
@@ -148,7 +148,7 @@ export default function Availability({ schedule }: { schedule: number }) {
               </div>
             </div>
             <div className="min-w-40 col-span-3 space-y-2 lg:col-span-1">
-              <div className="xl:max-w-80 w-full pr-4 sm:p-0">
+              <div className="min-w-80 max-w-80 p-0 pr-4">
                 <div>
                   <label htmlFor="timeZone" className="block text-sm font-medium text-gray-700">
                     {t("timezone")}
@@ -159,7 +159,7 @@ export default function Availability({ schedule }: { schedule: number }) {
                       value ? (
                         <TimezoneSelect
                           value={value}
-                          className="focus:border-brand mt-1 block rounded-md border-gray-300 text-sm"
+                          className="focus:border-brand mt-1 block rounded-none border-gray-300 text-sm"
                           onChange={(timezone) => onChange(timezone.value)}
                         />
                       ) : (

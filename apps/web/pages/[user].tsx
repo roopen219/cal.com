@@ -142,9 +142,7 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
               <p className="dark:text-darkgray-600 text-s text-neutral-500">{user.bio}</p>
             </div>
           )}
-          <div
-            className="rounded-md border border-neutral-200 dark:border-neutral-700 dark:hover:border-neutral-600"
-            data-testid="event-types">
+          <div className="border border-neutral-200" data-testid="event-types">
             {user.away ? (
               <div className="overflow-hidden rounded-sm border dark:border-gray-900">
                 <div className="p-8 text-center text-gray-400 dark:text-white">
@@ -161,7 +159,7 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
                 <div
                   key={type.id}
                   style={{ display: "flex", ...eventTypeListItemEmbedStyles }}
-                  className="dark:bg-darkgray-100 group relative border-b border-neutral-200 bg-white  first:rounded-t-md last:rounded-b-md last:border-b-0 hover:bg-gray-50 dark:border-neutral-700 dark:hover:border-neutral-600">
+                  className="dark:bg-darkgray-100 group relative border-b border-neutral-200 bg-white last:border-b-0 hover:bg-gray-50 dark:border-neutral-700 dark:hover:border-neutral-600">
                   <Icon.FiArrowRight className="absolute right-4 top-4 h-4 w-4 text-black opacity-0 transition-opacity group-hover:opacity-100 dark:text-white" />
                   {/* Don't prefetch till the time we drop the amount of javascript in [user][type] page which is impacting score for [user] page */}
                   <Link
@@ -179,10 +177,8 @@ export default function User(props: inferSSRProps<typeof getServerSideProps>) {
                       className="block w-full p-5"
                       data-testid="event-type-link">
                       <div className="flex flex-wrap items-center">
-                        <h2 className="dark:text-darkgray-700 pr-2 text-sm font-semibold text-gray-700">
-                          {type.title}
-                        </h2>
-                        <p className="dark:text-darkgray-600 hidden text-sm font-normal leading-none text-gray-600 md:block">{`/${user.username}/${type.slug}`}</p>
+                        <h2 className="pr-2 text-sm font-medium text-gray-900">{type.title}</h2>
+                        <small className="hidden text-xs font-normal leading-none text-gray-700 md:block">{`/${user.username}/${type.slug}`}</small>
                       </div>
                       <EventTypeDescription eventType={type} />
                     </a>

@@ -243,23 +243,23 @@ const BrandColor = ({
       <style>
         {`body {
       /* green--500*/
-      --booking-highlight-color: ${embedBrandingColors.highlightColor || "#10B981"};
+      --booking-highlight-color: #788599;
       /*  gray--200 */
-      --booking-lightest-color: ${embedBrandingColors.lightestColor || "#E1E1E1"};
+      --booking-lightest-color: #E7ECF2;
       /* gray--400 */
-      --booking-lighter-color: ${embedBrandingColors.lighterColor || "#ACACAC"};
+      --booking-lighter-color: #606060;
       /* gray--500 */
-      --booking-light-color: ${embedBrandingColors.lightColor || "#888888"};
+      --booking-light-color: #788599;
       /* gray--600 */
-      --booking-median-color: ${embedBrandingColors.medianColor || "#494949"};
+      --booking-median-color: #494949;
       /* gray--800 */
-      --booking-dark-color: ${embedBrandingColors.darkColor || "#313131"};
+      --booking-dark-color: #313131;
       /* gray--900 */
-      --booking-darker-color: ${embedBrandingColors.darkerColor || "#292929"};
-      --brand-color: ${lightVal};
-      --brand-text-color: ${getContrastingTextColor(lightVal, true)};
-      --brand-color-dark-mode: ${darkVal};
-      --brand-text-color-dark-mode: ${getContrastingTextColor(darkVal, true)};
+      --booking-darker-color: #212933;
+      --brand-color: #5506be;
+      --brand-text-color: #fff;
+      --brand-color-dark-mode: #fafafa;
+      --brand-text-color-dark-mode: #5506be;
     `}
       </style>
     </Head>

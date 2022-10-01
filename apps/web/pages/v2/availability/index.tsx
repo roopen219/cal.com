@@ -66,7 +66,7 @@ export function AvailabilityList({ schedules }: inferQueryOutput<"viewer.availab
           />
         </div>
       ) : (
-        <div className="mb-16 overflow-hidden rounded-md border border-gray-200 bg-white">
+        <div className="mb-16 overflow-hidden rounded-none border border-gray-200 bg-white">
           <ul className="divide-y divide-neutral-200" data-testid="schedules" ref={animationParentRef}>
             {schedules.map((schedule) => (
               <ScheduleListItem

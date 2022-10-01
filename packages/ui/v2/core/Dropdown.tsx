@@ -15,11 +15,8 @@ export const DropdownMenuTrigger = forwardRef<HTMLButtonElement, DropdownMenuTri
       {...props}
       className={
         props.asChild
-          ? classNames(
-              className,
-              "radix-state-open:bg-gray-100 radix-state-open:ring-brand-800 radix-state-open:ring-1 focus:ring-brand-800 focus:ring-1 focus-visible:outline-none"
-            )
-          : `inline-flex items-center rounded-md bg-transparent px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-1 group-hover:text-black ${className}`
+          ? classNames(className, "radix-state-open:bg-gray-100")
+          : `inline-flex items-center rounded-md bg-transparent px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:bg-gray-100 focus:outline-none group-hover:text-black ${className}`
       }
       ref={forwardedRef}
     />
@@ -37,7 +34,7 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
         portalled={props.portalled}
         align={align}
         {...props}
-        className="shadow-dropdown w-50 relative z-10 mt-1 -ml-0 origin-top-right rounded-md border border-gray-200 bg-white text-sm"
+        className="shadow-dropdown w-50 relative z-10 mt-1 -ml-0 origin-top-right border border-gray-200 bg-white text-sm"
         ref={forwardedRef}>
         {children}
       </DropdownMenuPrimitive.Content>

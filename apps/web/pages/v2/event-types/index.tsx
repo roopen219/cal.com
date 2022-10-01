@@ -59,15 +59,15 @@ const Item = ({ type, group, readOnly }: { type: EventType; group: EventTypeGrou
         title={`${type.title} ${type.description ? `– ${type.description}` : ""}`}>
         <div>
           <span
-            className="truncate font-semibold text-gray-700 ltr:mr-1 rtl:ml-1"
+            className="truncate font-medium text-gray-900 ltr:mr-1 rtl:ml-1"
             data-testid={"event-type-title-" + type.id}>
             {type.title}
           </span>
           <small
-            className="hidden font-normal leading-4 text-gray-600 sm:inline"
+            className="hidden font-normal leading-4 text-gray-700 sm:inline"
             data-testid={"event-type-slug-" + type.id}>{`/${group.profile.slug}/${type.slug}`}</small>
           {readOnly && (
-            <span className="rtl:mr-2inline items-center rounded-sm bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-800 ltr:ml-2">
+            <span className="rtl:mr-2inline items-center rounded-sm bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-700 ltr:ml-2">
               {t("readonly") as string}
             </span>
           )}
@@ -197,18 +197,18 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
   const firstItem = types[0];
   const lastItem = types[types.length - 1];
   return (
-    <div className="mb-16 flex overflow-hidden rounded-md border border-gray-200 bg-white">
+    <div className="mb-16 flex overflow-hidden border border-gray-200 bg-white">
       <ul ref={parent} className="!static w-full divide-y divide-neutral-200" data-testid="event-types">
         {types.map((type, index) => {
           const embedLink = `${group.profile.slug}/${type.slug}`;
           const calLink = `${CAL_URL}/${embedLink}`;
           return (
             <li key={type.id}>
-              <div className="flex items-center justify-between hover:bg-neutral-50">
+              <div className="hover:bg-brand-300 flex items-center justify-between">
                 <div className="group flex w-full items-center justify-between px-4 py-4 pr-0 sm:px-6">
                   {!(firstItem && firstItem.id === type.id) && (
                     <button
-                      className="invisible absolute left-[5px] -mt-4 mb-4 -ml-4 hidden h-6 w-6 scale-0 items-center justify-center rounded-md border bg-white p-1 text-gray-400 transition-all hover:border-transparent hover:text-black hover:shadow disabled:hover:border-inherit disabled:hover:text-gray-400 disabled:hover:shadow-none group-hover:visible group-hover:scale-100 sm:ml-0 sm:flex lg:left-[36px]"
+                      className="invisible absolute left-[5px] -mt-4 mb-4 -ml-4 hidden h-6 w-6 scale-0 items-center justify-center border bg-white p-1 text-gray-400 transition-all hover:border-transparent hover:text-black hover:shadow disabled:hover:border-inherit disabled:hover:text-gray-400 disabled:hover:shadow-none group-hover:visible group-hover:scale-100 sm:ml-0 sm:flex lg:left-[36px]"
                       onClick={() => moveEventType(index, -1)}>
                       <Icon.FiArrowUp className="h-5 w-5" />
                     </button>
@@ -216,7 +216,7 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
 
                   {!(lastItem && lastItem.id === type.id) && (
                     <button
-                      className="invisible absolute left-[5px] mt-8 -ml-4 hidden h-6 w-6 scale-0 items-center justify-center rounded-md  border bg-white p-1 text-gray-400 transition-all hover:border-transparent hover:text-black hover:shadow disabled:hover:border-inherit disabled:hover:text-gray-400 disabled:hover:shadow-none group-hover:visible group-hover:scale-100 sm:ml-0 sm:flex lg:left-[36px]"
+                      className="invisible absolute left-[5px] mt-8 -ml-4 hidden h-6 w-6 scale-0 items-center justify-center border bg-white p-1 text-gray-400 transition-all hover:border-transparent hover:text-black hover:shadow disabled:hover:border-inherit disabled:hover:text-gray-400 disabled:hover:shadow-none group-hover:visible group-hover:scale-100 sm:ml-0 sm:flex lg:left-[36px]"
                       onClick={() => moveEventType(index, 1)}>
                       <Icon.FiArrowDown className="h-5 w-5" />
                     </button>
@@ -258,7 +258,7 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
                         <ButtonGroup combined>
                           <Tooltip content={t("preview") as string}>
                             <Button
-                              color="secondary"
+                              color="minimal"
                               target="_blank"
                               size="icon"
                               href={calLink}
@@ -269,7 +269,7 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
 
                           <Tooltip content={t("copy_link") as string}>
                             <Button
-                              color="secondary"
+                              color="minimal"
                               size="icon"
                               StartIcon={Icon.FiLink}
                               onClick={() => {
@@ -284,7 +284,7 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
                               <Button
                                 type="button"
                                 size="icon"
-                                color="secondary"
+                                color="minimal"
                                 combined
                                 StartIcon={Icon.FiMoreHorizontal}
                               />

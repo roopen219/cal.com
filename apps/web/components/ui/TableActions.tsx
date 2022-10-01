@@ -12,7 +12,7 @@ export type ActionType = {
   iconClassName?: string;
   label: string;
   disabled?: boolean;
-  color?: "primary" | "secondary";
+  color?: "primary" | "secondary" | "minimal";
 } & (
   | { href: string; onClick?: never; actions?: never }
   | { href?: never; onClick: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void; actions?: never }
@@ -38,7 +38,7 @@ const DropdownActions = ({
     <Dropdown>
       {!actionTrigger ? (
         <DropdownMenuTrigger asChild>
-          <Button type="button" color="secondary" size="icon" StartIcon={Icon.FiMoreHorizontal} />
+          <Button type="button" color="minimal" size="icon" StartIcon={Icon.FiMoreHorizontal} />
         </DropdownMenuTrigger>
       ) : (
         <DropdownMenuTrigger asChild>{actionTrigger}</DropdownMenuTrigger>
@@ -49,7 +49,7 @@ const DropdownActions = ({
             <Button
               type="button"
               color="minimal"
-              className="w-full rounded-none font-normal"
+              className="w-full rounded-none font-normal hover:bg-gray-100"
               href={action.href}
               StartIcon={action.icon}
               onClick={action.onClick || defaultAction}

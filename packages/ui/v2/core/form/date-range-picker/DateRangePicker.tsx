@@ -18,7 +18,7 @@ const DateRangePicker = ({ disabled, startDate, endDate, onDatesChange }: Props)
     <>
       <PrimitiveDateRangePicker
         disabled={disabled || false}
-        className="rounded-sm border-gray-300 text-sm"
+        className="rounded-none border-gray-300 text-sm"
         clearIcon={null}
         calendarIcon={<Icon.FiCalendar className="h-4 w-4 text-gray-500" />}
         rangeDivider={<Icon.FiArrowRight className="h-4 w-4 text-gray-400 ltr:mr-2 rtl:ml-2" />}

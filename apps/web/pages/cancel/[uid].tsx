@@ -73,7 +73,7 @@ export default function Type(props: inferSSRProps<typeof getServerSideProps>) {
                         <Icon.FiX className="h-6 w-6 text-red-600" />
                       </div>
                       <div className="mt-3 text-center sm:mt-5">
-                        <h3 className="text-2xl font-semibold leading-6 text-neutral-900 dark:text-white">
+                        <h3 className="text-2xl font-medium leading-6 text-neutral-900 dark:text-white">
                           {props.cancellationAllowed
                             ? t("really_cancel_booking")
                             : t("cannot_cancel_booking")}
@@ -162,7 +162,7 @@ export default function Type(props: inferSSRProps<typeof getServerSideProps>) {
                           placeholder={t("cancellation_reason_placeholder")}
                           value={cancellationReason}
                           onChange={(e) => setCancellationReason(e.target.value)}
-                          className="mt-2 mb-3 w-full dark:border-gray-900 dark:bg-gray-700 dark:text-white sm:mb-3 "
+                          className="sellular-input sellular-input--textarea !mb-3 w-full"
                           rows={3}
                         />
                         <div className="flex justify-between space-x-2 text-center rtl:space-x-reverse">

@@ -392,7 +392,7 @@ const BookingPage = ({
   const disableInput = !!rescheduleUid && !!defaultUserValues.email && !!defaultUserValues.name;
   const disableLocations = !!rescheduleUid;
   const disabledExceptForOwner = disableInput && !loggedInIsOwner;
-  const inputClassName = "block w-full sellular-input--text";
+  const inputClassName = "block w-full sellular-input sellular-input--text";
 
   let isSmsReminderNumberNeeded = false;
 
@@ -567,24 +567,22 @@ const BookingPage = ({
                   <label htmlFor="name" className="sellular-input-label block">
                     {t("your_name")}
                   </label>
-                  <div className="mt-1">
-                    <input
-                      {...bookingForm.register("name", { required: true })}
-                      type="text"
-                      name="name"
-                      id="name"
-                      required
-                      className={inputClassName}
-                      placeholder={t("example_name")}
-                      disabled={disableInput}
-                    />
-                  </div>
+                  <input
+                    {...bookingForm.register("name", { required: true })}
+                    type="text"
+                    name="name"
+                    id="name"
+                    required
+                    className={inputClassName}
+                    placeholder={t("example_name")}
+                    disabled={disableInput}
+                  />
                 </div>
                 <div className="mb-4">
                   <label htmlFor="email" className="sellular-input-label block ">
                     {t("email_address")}
                   </label>
-                  <div className="mt-1">
+                  <div>
                     <EmailInput
                       {...bookingForm.register("email")}
                       required
@@ -643,7 +641,7 @@ const BookingPage = ({
                     <label htmlFor="phone" className="sellular-input-label block">
                       {t("phone_number")}
                     </label>
-                    <div className="mt-1">
+                    <div>
                       <AttendeeInput<BookingFormValues>
                         control={bookingForm.control}
                         name="phone"
@@ -666,9 +664,7 @@ const BookingPage = ({
                   .map((input) => (
                     <div className="mb-4" key={input.id}>
                       {input.type !== EventTypeCustomInputType.BOOL && (
-                        <label
-                          htmlFor={"custom_" + input.id}
-                          className="mb-1 block text-sm font-medium text-gray-700 dark:text-white">
+                        <label htmlFor={"custom_" + input.id} className="sellular-input-label block">
                           {input.label}
                         </label>
                       )}
@@ -736,9 +732,7 @@ const BookingPage = ({
                 {!eventType.disableGuests && guestToggle && (
                   <div className="mb-4">
                     <div>
-                      <label
-                        htmlFor="guests"
-                        className="mb-1 block text-sm font-medium text-gray-700 dark:text-white">
+                      <label htmlFor="guests" className="sellular-input-label block">
                         {t("guests")}
                       </label>
                       {!disableInput && (
@@ -792,7 +786,7 @@ const BookingPage = ({
                     <label htmlFor="smsReminderNumber" className="sellular-input-label block">
                       {t("number_for_sms_reminders")}
                     </label>
-                    <div className="mt-1">
+                    <div>
                       <PhoneInput<BookingFormValues>
                         control={bookingForm.control}
                         name="smsReminderNumber"
@@ -810,9 +804,7 @@ const BookingPage = ({
                   </div>
                 )}
                 <div className="mb-4">
-                  <label
-                    htmlFor="notes"
-                    className="mb-1 block text-sm font-medium text-gray-700 dark:text-white">
+                  <label htmlFor="notes" className="sellular-input-label block">
                     {rescheduleUid ? t("reschedule_optional") : t("additional_notes")}
                   </label>
                   {rescheduleUid ? (
@@ -841,7 +833,7 @@ const BookingPage = ({
                   {!eventType.disableGuests && !guestToggle && (
                     <Button
                       type="button"
-                      color="minimalSecondary"
+                      color="secondary"
                       size="icon"
                       tooltip={t("additional_guests")}
                       StartIcon={Icon.FiUserPlus}
@@ -850,7 +842,7 @@ const BookingPage = ({
                     />
                   )}
                   <Button
-                    color="minimal"
+                    color="secondary"
                     type="button"
                     onClick={() => router.back()}
                     // We override this for this component only for now - as we don't support darkmode everywhere in the app

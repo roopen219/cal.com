@@ -107,7 +107,7 @@ export const EventSetupTab = (
             <Select
               options={locationOptions}
               isSearchable={false}
-              className="block w-full min-w-0 flex-1 rounded-sm text-sm"
+              className="block w-full min-w-0 flex-1 text-sm"
               onChange={(e) => {
                 if (e?.value) {
                   const newLocationType: EventLocationType["type"] = e.value;
@@ -134,12 +134,12 @@ export const EventSetupTab = (
                 return null;
               }
               return (
-                <li key={location.type} className="mb-2 rounded-md border border-neutral-300 py-1.5 px-2">
+                <li key={location.type} className="mb-2 border border-neutral-300 py-1.5 px-2">
                   <div className="flex justify-between">
                     <div key={index} className="flex flex-grow items-center">
                       <img
                         src={eventLocationType.iconUrl}
-                        className="h-6 w-6"
+                        className="h-4 w-4"
                         alt={`${eventLocationType.label} logo`}
                       />
                       <span className="text-sm ltr:ml-2 rtl:mr-2">
@@ -170,7 +170,7 @@ export const EventSetupTab = (
             })}
             {validLocations.length > 0 && validLocations.length !== locationOptions.length && (
               <li>
-                <Button StartIcon={Icon.FiPlus} color="minimal" onClick={() => setShowLocationModal(true)}>
+                <Button StartIcon={Icon.FiPlus} color="secondary" onClick={() => setShowLocationModal(true)}>
                   {t("add_location")}
                 </Button>
               </li>

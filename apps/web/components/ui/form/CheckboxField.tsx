@@ -21,7 +21,7 @@ const CheckboxField = forwardRef<HTMLInputElement, Props>(
             {React.createElement(
               descriptionAsLabel ? "div" : "label",
               {
-                className: "flex text-sm sellular-input-label !pb-0",
+                className: "flex text-sm sellular-input-label !pb-0 cursor-pointer",
                 ...(!descriptionAsLabel
                   ? {
                       htmlFor: rest.id,
@@ -48,10 +48,10 @@ const CheckboxField = forwardRef<HTMLInputElement, Props>(
                     {...rest}
                     ref={ref}
                     type="checkbox"
-                    className="focus:ring-brand border-brand text-brand h-4 w-4 rounded"
+                    className="text-brand hover:border-brand h-4 w-4 cursor-pointer rounded border-gray-500 focus:outline-none focus:ring-transparent"
                   />
                 </div>
-                <span className="text-sm text-gray-500 ltr:ml-3 rtl:mr-3">{description}</span>
+                <span className="cursor-pointer text-sm text-gray-500 ltr:ml-2 rtl:mr-2">{description}</span>
               </>
             )}
             {informationIconText && <InfoBadge content={informationIconText} />}

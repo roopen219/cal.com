@@ -83,6 +83,7 @@ function BookingListItem(booking: BookingItemProps) {
       },
       icon: Icon.FiSlash,
       disabled: mutation.isLoading,
+      color: "minimal",
     },
     {
       id: "confirm",
@@ -114,11 +115,13 @@ function BookingListItem(booking: BookingItemProps) {
           : ""
       }`,
       icon: Icon.FiX,
+      color: "minimal",
     },
     {
       id: "edit_booking",
       label: t("edit_booking"),
       icon: Icon.FiEdit,
+      color: "minimal",
       actions: [
         {
           id: "reschedule",
@@ -235,15 +238,12 @@ function BookingListItem(booking: BookingItemProps) {
           <DialogHeader title={t("rejection_reason_title")} />
 
           <p className="-mt-4 text-sm text-gray-500">{t("rejection_reason_description")}</p>
-          <p className="mt-6 mb-2 text-sm font-bold text-black">
-            {t("rejection_reason")}
-            <span className="font-normal text-gray-500"> (Optional)</span>
-          </p>
+          <p className="sellular-input-label mt-4">{t("rejection_reason")} (Optional)</p>
           <TextArea
             name={t("rejection_reason")}
             value={rejectionReason}
             onChange={(e) => setRejectionReason(e.target.value)}
-            className="mb-5 sm:mb-6"
+            className="mb-6"
           />
 
           <DialogFooter>
@@ -262,7 +262,7 @@ function BookingListItem(booking: BookingItemProps) {
         </DialogContent>
       </Dialog>
 
-      <tr className="flex hover:bg-neutral-50">
+      <tr className="hover:bg-brand-300 flex items-center">
         <td className="hidden align-top ltr:pl-6 rtl:pr-6 sm:table-cell sm:w-48" onClick={onClick}>
           <div className="cursor-pointer py-4">
             <div className="text-sm leading-6 text-gray-900">{startTime}</div>

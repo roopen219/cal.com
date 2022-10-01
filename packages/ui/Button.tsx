@@ -69,11 +69,11 @@ export const Button = forwardRef<HTMLAnchorElement | HTMLButtonElement, ButtonPr
         color === "primary" &&
           (disabled
             ? "border border-transparent bg-gray-400 text-white"
-            : "border border-transparent dark:text-darkmodebrandcontrast text-brandcontrast bg-brand dark:bg-darkmodebrand hover:bg-opacity-90 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-neutral-900"),
+            : "border border-transparent bg-brand text-white hover:bg-opacity-90 focus:outline-none"),
         color === "secondary" &&
           (disabled
-            ? "border border-gray-200 text-gray-400 bg-white"
-            : "border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-neutral-900 dark:bg-transparent dark:text-white dark:border-gray-800 dark:hover:bg-gray-800"),
+            ? "text-gray-400 bg-white"
+            : "text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"),
         color === "alert" &&
           (disabled
             ? "border border-transparent bg-gray-400 text-white"

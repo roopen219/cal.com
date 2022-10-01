@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap');
 
 :root {
+  --text-color-black: #212933;
   --text-color-secondary: #788599;
   --colors-graybase-gray-7: #f5f4fc;
   --booking-light-color: #788599;
   --booking-highlight-color: #788599;
+  --text-color-error: #E44A43;
 }
 
 ::selection {
@@ -21,6 +23,8 @@ html {
   width: 240px;
   max-width: 240px;
   min-width: 240px;
+  z-index: 1;
+  background-color: #fff;
 }
 
 .sellular-section-title {
@@ -36,7 +40,7 @@ html {
 .sellular-side-navbar .sellular-link {
   font-size: 14px;
   line-height: 30px;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--text-color-secondary);
   position: relative;
   padding-top: 6px;
@@ -67,8 +71,39 @@ html {
   font-weight: 500;
   color: var(--text-color-secondary);
   font-size: 14px;
+  line-height: 20px;
+  padding-bottom: 4px;
+}
+
+.cal-react-select-container .cal-react-select__menu {
+  border-radius: 0;
+}
+
+.cal-react-select-container .cal-react-select__menu .cal-react-select__option {
+  color: var(--text-color-black)
+}
+
+.cal-react-select-container .cal-react-select__option--is-focused {
+  background-color: #f7f7f8;
+}
+
+.cal-react-select-container .cal-react-select__control {
+  box-sizing: border-box;
+  margin: 0;
+  font-variant: tabular-nums;
+  list-style: none;
+  -webkit-font-feature-settings: "tnum","tnum";
+  font-feature-settings: "tnum","tnum";
+  width: 100%;
+  min-width: 0;
+  padding: 6px 11px;
+  color: #212933;
+  font-size: 14px;
   line-height: 1.5715;
-  padding-bottom: 8px;
+  background-color: #fff;
+  border: 1px solid #e7ecf2;
+  transition: all .3s;
+  border-radius: 0;
 }
 
 .sellular-input {
@@ -96,13 +131,13 @@ html {
 }
 
 .sellular-input--text::-webkit-input-placeholder, .sellular-input--textarea::-webkit-input-placeholder {
-  color: #c5c9d0;
+  color: #788599;
+  font-weight: 400;
   font-size: 14px;
-  line-height: 1.5715;
-  font-weight: lighter;
+  line-height: 20px;
 }
 
-.sellular-input--text:hover, .sellular-input--textarea:hover {
+.sellular-input--text:hover, .sellular-input--textarea:hover, .cal-react-select-container .cal-react-select__control--is-focused, .cal-react-select-container .cal-react-select__control:hover, .cal-react-select-container .cal-react-select__control--menu-is-open {
   border-color: var(--brand-color);
   border-right-width: 1px!important;
 }
@@ -111,18 +146,41 @@ html {
   border-color: var(--brand-color);
   border-right-width: 1px!important;
   outline: 0;
-  box-shadow: 0 0 0 2px rgb(85 6 190 / 20%);
+  box-shadow: 0px 0px 8px rgba(137, 146, 158, 0.1);
 }
 
-.sellular-input-leading {
+.sellular-input-leading, .sellular-input-suffix {
   font-size: 14px;
   line-height: 1.5715;
   border: 1px solid #e7ecf2;
-  border-right: 0;
   background: #f7f7f8;
   padding-left: 12px;
   padding-right: 12px;
   color: var(--text-color-secondary);
+}
+
+.cal-react-select__value-container, .cal-react-select__dropdown-indicator {
+  padding: 0 !important;
+}
+
+.sellular-input-leading {
+  border-right: 0;
+}
+
+.sellular-input-suffix {
+  border-left: 0;
+}
+
+.sellular-input--text__error {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-color-error);
+  margin-top: 4px;
+}
+
+.sellular-input--text-error {
+  border-color: var(--text-color-error) !important;
 }
 
 .sellular-input--text__inset {
@@ -194,3 +252,79 @@ button[role="switch"][data-state="checked"] {
   background: var(--brand-color);
 }
 
+.react-daterange-picker > .react-daterange-picker__wrapper {
+  color: #212933 !important;
+  font-size: 14px !important;
+  line-height: 1.5715 !important;
+  background-color: #fff !important;
+  border: 1px solid #e7ecf2 !important;
+  transition: all .3s !important;
+  border-radius: 0 !important;
+}
+
+.react-daterange-picker > .react-daterange-picker__wrapper:focus-within, .react-daterange-picker > .react-daterange-picker__wrapper:focus-within:hover, .react-daterange-picker--open .react-daterange-picker__wrapper {
+  border-color: var(--brand-color) !important;
+  border-right-width: 1px!important;
+  box-shadow: 0px 0px 8px rgba(137, 146, 158, 0.1) !important;
+}
+
+.react-daterange-picker__calendar.react-daterange-picker__calendar--open {
+  margin-bottom: 4px;
+}
+
+.react-daterange-picker__calendar.react-daterange-picker__calendar--open .react-calendar {
+  border-radius: 0 !important;
+}
+
+.react-calendar__tile--active {
+  color: var(--text-color-black) !important;
+}
+
+.react-calendar__tile.react-calendar__month-view__days__day:hover {
+  background-color: #e7ecf2 !important;
+}
+
+.react-calendar__month-view__days > .react-calendar__tile.react-calendar__tile--hasActive, .react-calendar__month-view__days > .react-calendar__tile.react-calendar__tile--active, .react-calendar__month-view__days > button.react-calendar__tile.react-calendar__tile--active:hover {
+  background-color: var(--brand-color) !important;
+  color: #fff !important;
+}
+
+.react-calendar__tile--now::before {
+  background-color: #fff !important;
+}
+
+.sellular-tab-group {
+  box-shadow: 0 -1px 0 0 #E7ECF2 inset;
+}
+
+.sellular-tab {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-color-secondary);
+
+  text-align: center;
+  padding-top: 16px;
+  padding-bottom: 18px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-right: 16px;
+}
+
+.sellular-tab--active {
+  color: #5506BE;
+  font-weight: 500;
+  box-shadow: 0 -2px 0 0 #5506be inset;
+}
+
+.sellular-input-shadow {
+  box-shadow: 0px 0px 0px 3px #ffffff, 0px 0px 0px 4px #5506be;
+}
+
+.cal-react-select__input-container {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.cal-react-select__input {
+  box-shadow: none !important;
+}

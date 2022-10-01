@@ -59,7 +59,9 @@ const removeQueryParams = (router: NextRouter, queryParams: string[]) => {
   queryParams.forEach((param) => {
     delete router.query[param];
   });
-  router.push(`${router.asPath.split("?")[0]}?${router.query.toString()}`);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  router.push(`${router.asPath.split("?")[0]}?${new URLSearchParams(router.query).toString()}`);
 };
 
 /**
@@ -292,7 +294,7 @@ const embeds: {
 }[] = [
   {
     title: "Inline Embed",
-    subtitle: "Loads your Cal scheduling page directly inline with your other website content",
+    subtitle: "Loads your calendar scheduling page directly inline with your other website content",
     type: "inline",
     illustration: (
       <svg
@@ -365,7 +367,7 @@ const embeds: {
   },
   {
     title: "Floating pop-up button",
-    subtitle: "Adds a floating button on your site that launches Cal in a dialog.",
+    subtitle: "Adds a floating button on your site that launches the calendar in a dialog.",
     type: "floating-popup",
     illustration: (
       <svg
@@ -391,7 +393,7 @@ const embeds: {
   },
   {
     title: "Pop up via element click",
-    subtitle: "Open your Cal dialog when someone clicks an element.",
+    subtitle: "Open your calendar dialog when someone clicks an element.",
     type: "element-click",
     illustration: (
       <svg
@@ -495,7 +497,7 @@ const tabs = [
             style={{ resize: "none", overflow: "auto" }}
             readOnly
             value={
-              `<!-- Cal ${embedType} embed code begins -->\n` +
+              `<!-- Calendar ${embedType} embed code begins -->\n` +
               (embedType === "inline"
                 ? `<div style="width:${getDimension(previewState.inline.width)};height:${getDimension(
                     previewState.inline.height
@@ -505,7 +507,7 @@ const tabs = [
 ${getEmbedSnippetString()}
 ${getEmbedTypeSpecificString({ embedFramework: "HTML", embedType, calLink, previewState })}
 </script>
-<!-- Cal ${embedType} embed code ends -->`
+<!-- Calendar ${embedType} embed code ends -->`
             }
           />
           <p className="hidden text-sm text-gray-500">
@@ -608,17 +610,17 @@ const ChooseEmbedTypesDialogContent = () => {
   return (
     <DialogContent type="creation" useOwnActionButtons size="lg">
       <div className="mb-4">
-        <h3 className="text-lg font-bold leading-6 text-gray-900" id="modal-title">
+        <h3 className="text-lg font-medium leading-6 text-gray-900" id="modal-title">
           {t("how_you_want_add_cal_site")}
         </h3>
         <div>
-          <p className="text-sm text-gray-500">{t("choose_ways_put_cal_site")}</p>
+          <p className="mt-2 text-sm text-gray-500">{t("choose_ways_put_cal_site")}</p>
         </div>
       </div>
       <div className="flex items-start">
         {embeds.map((embed, index) => (
           <button
-            className="mr-2 w-1/3 border border-transparent p-3 text-left hover:rounded-md hover:border-gray-200 hover:bg-neutral-100"
+            className="mr-2 w-1/3 border border-transparent p-3 text-left hover:border-gray-200 hover:bg-neutral-100"
             key={index}
             data-testid={embed.type}
             onClick={() => {
@@ -886,7 +888,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
                         };
                       });
                     }}
-                    defaultValue="Book my Cal"
+                    defaultValue="Book my Calendar"
                     required
                   />
                 </div>
@@ -980,7 +982,7 @@ const EmbedTypeCodeAndPreviewDialogContent = ({
               open={isBookingCustomizationOpen}
               onOpenChange={() => setIsBookingCustomizationOpen((val) => !val)}>
               <CollapsibleTrigger className="flex w-full" type="button">
-                <div className="text-base  font-medium text-neutral-900">Cal Booking Customization</div>
+                <div className="text-base  font-medium text-neutral-900">Calendar Booking Customization</div>
                 <Icon.FiChevronRight
                   className={`${
                     isBookingCustomizationOpen ? "rotate-90 transform" : ""

@@ -26,8 +26,8 @@ export function ScheduleListItem({
 
   return (
     <li key={schedule.id}>
-      <div className="flex items-center justify-between py-5 hover:bg-neutral-50 ltr:pl-4 rtl:pr-4 sm:ltr:pl-0 sm:rtl:pr-0">
-        <div className="group flex w-full items-center justify-between hover:bg-neutral-50 sm:px-6">
+      <div className="hover:bg-brand-300 flex items-center justify-between py-5 ltr:pl-4 rtl:pr-4 sm:ltr:pl-0 sm:rtl:pr-0">
+        <div className="hover:bg-brand-300 group flex w-full items-center justify-between sm:px-6">
           <Link href={"/availability/" + schedule.id}>
             <a className="flex-grow truncate text-sm" title={schedule.name}>
               <div className="space-x-2">
@@ -60,7 +60,7 @@ export function ScheduleListItem({
         </div>
         <Dropdown>
           <DropdownMenuTrigger asChild className="mr-5">
-            <Button type="button" size="icon" color="secondary" StartIcon={Icon.FiMoreHorizontal} />
+            <Button type="button" size="icon" color="minimal" StartIcon={Icon.FiMoreHorizontal} />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>

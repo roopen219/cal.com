@@ -87,7 +87,7 @@ const CustomInputTypeForm: FC<Props> = (props) => {
         <input
           id="required"
           type="checkbox"
-          className="text-primary-600 focus:ring-primary-500 h-4 w-4 rounded border-gray-300 ltr:mr-2 rtl:ml-2"
+          className="text-brand h-4 w-4 rounded border-gray-300 focus:ring-transparent ltr:mr-2 rtl:ml-2"
           defaultChecked={selectedCustomInput?.required ?? true}
           {...register("required")}
         />

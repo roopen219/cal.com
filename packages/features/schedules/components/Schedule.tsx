@@ -93,10 +93,10 @@ const CopyButton = ({
     <Dropdown open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button
-          className={classNames(open && "ring-brand-500 !bg-gray-100 outline-none ring-2 ring-offset-1")}
+          className={classNames(open && "!bg-gray-100 outline-none")}
           type="button"
           tooltip={t("duplicate")}
-          color="minimal"
+          color="secondary"
           size="icon"
           StartIcon={Icon.FiCopy}
         />
@@ -174,7 +174,7 @@ const DayRanges = <TFieldValues extends FieldValues>({
                 tooltip={t("add_time_availability")}
                 className=" text-neutral-400"
                 type="button"
-                color="minimal"
+                color="secondary"
                 size="icon"
                 StartIcon={Icon.FiPlus}
                 onClick={() => {
@@ -218,7 +218,7 @@ const TimeRangeField = ({ className, value, onChange }: { className?: string } &
   return (
     <div className={classNames("mx-1", className)}>
       <LazySelect
-        className="inline-block h-9 w-[100px]"
+        className="inline-block w-[100px]"
         value={value.start}
         max={value.end}
         onChange={(option) => {
@@ -360,7 +360,7 @@ const CopyTimes = ({
             const weekdayIndex = (num + weekStart) % 7;
             return (
               <li key={weekday}>
-                <label className="flex w-full items-center justify-between">
+                <label className="flex w-full cursor-pointer items-center justify-between">
                   <span className="px-1">{weekday}</span>
                   <input
                     value={weekdayIndex}
@@ -374,7 +374,7 @@ const CopyTimes = ({
                       }
                     }}
                     type="checkbox"
-                    className="inline-block rounded-[4px] border-gray-300 text-neutral-900 focus:ring-neutral-500 disabled:text-neutral-400"
+                    className="focus:border-brand hover:border-brand text-brand inline-block rounded-[4px] border-gray-300 !ring-transparent disabled:text-neutral-400"
                   />
                 </label>
               </li>
@@ -384,7 +384,7 @@ const CopyTimes = ({
       </div>
       <hr />
       <div className="space-x-2 px-2">
-        <Button color="minimalSecondary" onClick={() => onCancel()}>
+        <Button color="secondary" onClick={() => onCancel()}>
           {t("cancel")}
         </Button>
         <Button color="primary" onClick={() => onClick(selected)}>

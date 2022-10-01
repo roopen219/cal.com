@@ -40,10 +40,9 @@ export type ButtonProps = ButtonBaseProps &
 
 const variantClassName = {
   primary:
-    "border border-transparent text-white bg-brand-500 hover:bg-brand-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500",
-  secondary: "border border-gray-200 text-brand-900 bg-white hover:bg-gray-100",
-  minimal:
-    "text-gray-700 bg-transparent hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:bg-gray-100 focus:ring-brand-900 dark:text-darkgray-900 hover:dark:text-gray-50",
+    "border border-transparent text-white bg-brand-500 hover:bg-brand-400 active:bg-brand-400 focus:outline-none",
+  secondary: "text-gray-400 bg-white hover:bg-neutral-50",
+  minimal: "text-gray-700 bg-transparent hover:bg-white focus:bg-white focus:outline-none",
   minimalSecondary:
     "text-gray-700 bg-transparent hover:bg-gray-100 dark:hover:bg-darkgray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:bg-gray-100 focus:ring-brand-900 dark:text-darkgray-900 hover:dark:text-gray-50 border border-transparent hover:border-gray-300 dark:hover:border-darkgray-300",
   destructive:
@@ -92,7 +91,6 @@ export const Button = forwardRef<HTMLAnchorElement | HTMLButtonElement, ButtonPr
         size === "base" && "h-9 px-4 py-2.5  ",
         size === "lg" && "h-[36px] px-4 py-2.5 ",
         size === "icon" && "flex justify-center min-h-[36px] min-w-[36px] ",
-        combined ? "" : "rounded-md",
         // different styles depending on color
         // set not-allowed cursor if disabled
         disabled ? variantDisabledClassName[color] : variantClassName[color],

@@ -39,33 +39,33 @@ export default function RecurringEventController({
         ) : (
           <>
             <div className="flex space-x-3 ">
-              <Switch
-                name="requireConfirmation"
-                data-testid="recurring-event-check"
-                fitToHeight={true}
-                checked={recurringEventState !== null}
-                onCheckedChange={(e) => {
-                  if (!e) {
-                    formMethods.setValue("recurringEvent", null);
-                    setRecurringEventState(null);
-                  } else {
-                    const newVal = recurringEvent || {
-                      interval: 1,
-                      count: 12,
-                      freq: Frequency.WEEKLY,
-                    };
-                    formMethods.setValue("recurringEvent", newVal);
-                    setRecurringEventState(newVal);
-                  }
-                }}
-              />
+              <div className="mt-1">
+                <Switch
+                  name="requireConfirmation"
+                  data-testid="recurring-event-check"
+                  fitToHeight={true}
+                  checked={recurringEventState !== null}
+                  onCheckedChange={(e) => {
+                    if (!e) {
+                      formMethods.setValue("recurringEvent", null);
+                      setRecurringEventState(null);
+                    } else {
+                      const newVal = recurringEvent || {
+                        interval: 1,
+                        count: 12,
+                        freq: Frequency.WEEKLY,
+                      };
+                      formMethods.setValue("recurringEvent", newVal);
+                      setRecurringEventState(newVal);
+                    }
+                  }}
+                />
+              </div>
               <div className="flex flex-col">
                 <Label className="text-sm font-semibold leading-none text-black">
                   {t("recurring_event")}
                 </Label>
-                <p className="-mt-2 text-sm leading-normal text-gray-600">
-                  {t("recurring_event_description")}
-                </p>
+                <p className="text-sm leading-normal text-gray-600">{t("recurring_event_description")}</p>
                 {recurringEventState && (
                   <div data-testid="recurring-event-collapsible" className="mt-4 text-sm">
                     <div className="flex items-center">
@@ -74,7 +74,7 @@ export default function RecurringEventController({
                         type="number"
                         min="1"
                         max="20"
-                        className="block h-[36px] w-16 rounded-md border-gray-300 text-sm [appearance:textfield] ltr:mr-2 rtl:ml-2"
+                        className="sellular-input sellular-input--text block h-[36px] !w-16 ltr:mr-2 rtl:ml-2"
                         defaultValue={recurringEventState.interval}
                         onChange={(event) => {
                           const newVal = {
@@ -106,7 +106,7 @@ export default function RecurringEventController({
                         type="number"
                         min="1"
                         max="20"
-                        className="block h-[36px] w-16 rounded-md border-gray-300 text-sm [appearance:textfield] ltr:mr-2 rtl:ml-2"
+                        className="sellular-input sellular-input--text block h-[36px] !w-16 ltr:mr-2 rtl:ml-2"
                         defaultValue={recurringEventState.count}
                         onChange={(event) => {
                           const newVal = {

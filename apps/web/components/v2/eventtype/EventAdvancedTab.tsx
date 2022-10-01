@@ -123,25 +123,27 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupInfered
       <hr />
       <div className="">
         <div className="flex space-x-3 ">
-          <Switch
-            checked={customInputs.length > 0}
-            fitToHeight={true}
-            onCheckedChange={(e) => {
-              if (e && customInputs.length === 0) {
-                // Push a placeholders
-                setSelectedCustomInput(undefined);
-                setSelectedCustomInputModalOpen(true);
-              } else if (!e) {
-                setCustomInputs([]);
-                formMethods.setValue("customInputs", []);
-              }
-            }}
-          />
+          <div className="mt-1">
+            <Switch
+              checked={customInputs.length > 0}
+              fitToHeight={true}
+              onCheckedChange={(e) => {
+                if (e && customInputs.length === 0) {
+                  // Push a placeholders
+                  setSelectedCustomInput(undefined);
+                  setSelectedCustomInputModalOpen(true);
+                } else if (!e) {
+                  setCustomInputs([]);
+                  formMethods.setValue("customInputs", []);
+                }
+              }}
+            />
+          </div>
           <div className="flex flex-col">
             <Skeleton as={Label} className="text-sm font-semibold leading-none text-black">
               {t("additional_inputs")}
             </Skeleton>
-            <Skeleton as="p" className="-mt-2 text-sm leading-normal text-gray-600">
+            <Skeleton as="p" className=" text-sm leading-normal text-gray-600">
               {t("additional_input_description")}
             </Skeleton>
           </div>
@@ -180,18 +182,20 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupInfered
         defaultValue={eventType.requiresConfirmation}
         render={({ field: { value, onChange } }) => (
           <div className="flex space-x-3">
-            <Switch
-              name="requireConfirmation"
-              checked={value}
-              onCheckedChange={(e) => onChange(e)}
-              disabled={seatsEnabled}
-              fitToHeight={true}
-            />
+            <div className="mt-1">
+              <Switch
+                name="requireConfirmation"
+                checked={value}
+                onCheckedChange={(e) => onChange(e)}
+                disabled={seatsEnabled}
+                fitToHeight={true}
+              />
+            </div>
             <div className="flex flex-col">
               <Skeleton as={Label} className="text-sm font-semibold leading-none text-black">
                 {t("requires_confirmation")}
               </Skeleton>
-              <Skeleton as="p" className="-mt-2 text-sm leading-normal text-gray-600">
+              <Skeleton as="p" className=" text-sm leading-normal text-gray-600">
                 {t("requires_confirmation_description")}
               </Skeleton>
             </div>
@@ -205,18 +209,20 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupInfered
         defaultValue={eventType.disableGuests}
         render={({ field: { value, onChange } }) => (
           <div className="flex space-x-3 ">
-            <Switch
-              name="disableGuests"
-              fitToHeight={true}
-              checked={value}
-              onCheckedChange={(e) => onChange(e)}
-              disabled={seatsEnabled}
-            />
+            <div className="mt-1">
+              <Switch
+                name="disableGuests"
+                fitToHeight={true}
+                checked={value}
+                onCheckedChange={(e) => onChange(e)}
+                disabled={seatsEnabled}
+              />
+            </div>
             <div className="flex flex-col">
               <Skeleton as={Label} className="text-sm font-semibold leading-none text-black">
                 {t("disable_guests")}
               </Skeleton>
-              <Skeleton as="p" className="-mt-2 text-sm leading-normal text-gray-600">
+              <Skeleton as="p" className=" text-sm leading-normal text-gray-600">
                 {t("disable_guests_description")}
               </Skeleton>
             </div>
@@ -231,17 +237,19 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupInfered
         defaultValue={eventType.hideCalendarNotes}
         render={({ field: { value, onChange } }) => (
           <div className="flex space-x-3 ">
-            <Switch
-              name="hideCalendarNotes"
-              fitToHeight={true}
-              checked={value}
-              onCheckedChange={(e) => onChange(e)}
-            />
+            <div className="mt-1">
+              <Switch
+                name="hideCalendarNotes"
+                fitToHeight={true}
+                checked={value}
+                onCheckedChange={(e) => onChange(e)}
+              />
+            </div>
             <div className="flex flex-col">
               <Skeleton as={Label} className="text-sm font-semibold leading-none text-black">
                 {t("disable_notes")}
               </Skeleton>
-              <Skeleton as="p" className="-mt-2 text-sm leading-normal text-gray-600">
+              <Skeleton as="p" className=" text-sm leading-normal text-gray-600">
                 {t("disable_notes_description")}
               </Skeleton>
             </div>
@@ -256,21 +264,23 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupInfered
         render={({ field: { value, onChange } }) => (
           <>
             <div className="flex space-x-3 ">
-              <Switch
-                data-testid="hashedLinkCheck"
-                name="hashedLinkCheck"
-                fitToHeight={true}
-                defaultChecked={!!value}
-                onCheckedChange={(e) => {
-                  setHashedLinkVisible(e);
-                  onChange(e ? hashedUrl : undefined);
-                }}
-              />
+              <div className="mt-1">
+                <Switch
+                  data-testid="hashedLinkCheck"
+                  name="hashedLinkCheck"
+                  fitToHeight={true}
+                  defaultChecked={!!value}
+                  onCheckedChange={(e) => {
+                    setHashedLinkVisible(e);
+                    onChange(e ? hashedUrl : undefined);
+                  }}
+                />
+              </div>
               <div className="flex flex-col">
                 <Skeleton as={Label} className="text-sm font-semibold leading-none text-black">
                   {t("private_link")}
                 </Skeleton>
-                <Skeleton as="p" className="-mt-2 text-sm leading-normal text-gray-600">
+                <Skeleton as="p" className=" text-sm leading-normal text-gray-600">
                   {t("private_link_description")}
                 </Skeleton>
               </div>
@@ -319,19 +329,21 @@ export const EventAdvancedTab = ({ eventType, team }: Pick<EventTypeSetupInfered
         render={({ field: { value, onChange } }) => (
           <>
             <div className="flex space-x-3">
-              <Switch
-                name="seatsPerTimeSlot"
-                checked={seatsInputVisible}
-                onCheckedChange={(e) => {
-                  setSeatsInputVisible(e);
-                  formMethods.setValue("seatsPerTimeSlot", seatsPerTimeSlot);
-                  onChange(e ? seatsPerTimeSlot : null);
-                }}
-                fitToHeight={true}
-              />
+              <div className="mt-1">
+                <Switch
+                  name="seatsPerTimeSlot"
+                  checked={seatsInputVisible}
+                  onCheckedChange={(e) => {
+                    setSeatsInputVisible(e);
+                    formMethods.setValue("seatsPerTimeSlot", seatsPerTimeSlot);
+                    onChange(e ? seatsPerTimeSlot : null);
+                  }}
+                  fitToHeight={true}
+                />
+              </div>
               <div className="flex flex-col">
                 <Label className="text-sm font-semibold leading-none text-black">{t("offer_seats")}</Label>
-                <p className="-mt-2 text-sm leading-normal text-gray-600">{t("offer_seats_description")}</p>
+                <p className="text-sm leading-normal text-gray-600">{t("offer_seats_description")}</p>
               </div>
             </div>
             {seatsInputVisible && (

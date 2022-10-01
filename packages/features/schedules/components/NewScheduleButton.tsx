@@ -67,16 +67,16 @@ export function NewScheduleButton({ name = "new-schedule" }: { name?: string }) 
           handleSubmit={(values) => {
             createMutation.mutate(values);
           }}>
-          <div className="mt-3 space-y-2">
-            <label htmlFor="label" className="block text-sm font-medium text-gray-700">
+          <div className="mt-3">
+            <label htmlFor="label" className="sellular-input-label block">
               {t("name")}
             </label>
-            <div className="mt-1">
+            <div>
               <input
                 type="text"
                 id="name"
                 required
-                className="block w-full rounded-sm border-gray-300 text-sm"
+                className="sellular-input sellular-input--text block w-full"
                 placeholder={t("default_schedule_name")}
                 {...register("name")}
               />

@@ -102,7 +102,7 @@ export default function Bookings() {
             <p className="pb-3 text-xs font-medium leading-4 text-gray-500 uppercase">{t("today")}</p>
              */}
 
-            <div className="overflow-hidden rounded-md border border-gray-200">
+            <div className="overflow-hidden border border-gray-200">
               <table className="w-full">
                 <tbody className="divide-y divide-gray-200 bg-white" data-testid="bookings">
                   {query.data.pages.map((page, index) => (

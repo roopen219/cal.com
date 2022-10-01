@@ -10,16 +10,7 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { HttpError } from "@calcom/lib/http-error";
 import { trpc, TRPCClientError } from "@calcom/trpc/react";
 import { Icon } from "@calcom/ui/Icon";
-import {
-  Button,
-  ButtonGroup,
-  HorizontalTabs,
-  Label,
-  showToast,
-  Switch,
-  Tooltip,
-  VerticalTabs,
-} from "@calcom/ui/v2";
+import { Button, ButtonGroup, HorizontalTabs, Label, showToast, Switch, Tooltip } from "@calcom/ui/v2";
 import ConfirmationDialogContent from "@calcom/ui/v2/core/ConfirmationDialogContent";
 import { Dialog } from "@calcom/ui/v2/core/Dialog";
 import Dropdown, {
@@ -51,7 +42,7 @@ function getNavigation(props: {
   enabledAppsNumber: number;
   enabledWorkflowsNumber: number;
 }) {
-  const { eventType, t, enabledAppsNumber, enabledWorkflowsNumber } = props;
+  const { eventType } = props;
   return [
     {
       name: "event_setup_tab_title",
@@ -82,18 +73,6 @@ function getNavigation(props: {
       href: `/event-types/${eventType.id}?tabName=recurring`,
       icon: Icon.FiRepeat,
       info: `recurring_event_tab_description`,
-    },
-    {
-      name: "apps",
-      href: `/event-types/${eventType.id}?tabName=apps`,
-      icon: Icon.FiGrid,
-      info: `${enabledAppsNumber} ${t("active")}`,
-    },
-    {
-      name: "workflows",
-      href: `/event-types/${eventType.id}?tabName=workflows`,
-      icon: Icon.FiZap,
-      info: `${enabledWorkflowsNumber} ${t("active")}`,
     },
   ];
 }
@@ -159,11 +138,11 @@ function EventTypeSingleLayout({
       subtitle={eventType.description || ""}
       CTA={
         <div className="flex items-center justify-end">
-          <div className="flex items-center rounded-md px-2 sm:hover:bg-gray-100">
+          <div className="flex items-center px-2">
             <Skeleton
               as={Label}
               htmlFor="hiddenSwitch"
-              className="mt-2 hidden cursor-pointer self-center pr-2 sm:inline">
+              className="hidden cursor-pointer self-center !pb-0 pr-2 sm:inline">
               {t("hide_from_profile")}
             </Skeleton>
             <Switch
@@ -181,7 +160,7 @@ function EventTypeSingleLayout({
             {/* We have to warp this in tooltip as it has a href which disabels the tooltip on buttons */}
             <Tooltip content={t("preview")}>
               <Button
-                color="secondary"
+                color="minimal"
                 target="_blank"
                 size="icon"
                 href={permalink}
@@ -191,7 +170,7 @@ function EventTypeSingleLayout({
             </Tooltip>
 
             <Button
-              color="secondary"
+              color="minimal"
               size="icon"
               StartIcon={Icon.FiLink}
               combined
@@ -204,12 +183,12 @@ function EventTypeSingleLayout({
             <EmbedButton
               embedUrl={encodeURIComponent(embedLink)}
               StartIcon={Icon.FiCode}
-              color="secondary"
+              color="minimal"
               size="icon"
               tooltip={t("embed")}
             />
             <Button
-              color="secondary"
+              color="minimal"
               size="icon"
               StartIcon={Icon.FiTrash}
               tooltip={t("delete")}
@@ -262,23 +241,15 @@ function EventTypeSingleLayout({
         </div>
       }>
       <ClientSuspense fallback={<Loader />}>
-        <div className="-mt-2 flex flex-col xl:flex-row xl:space-x-8">
-          <div className="hidden xl:block">
-            <VerticalTabs
-              className="primary-navigation"
-              tabs={EventTypeTabs}
-              sticky
-              linkProps={{ shallow: true }}
-            />
-          </div>
-          <div className="p-2 md:mx-0 md:p-0 xl:hidden">
+        <div className="-mt-2 flex flex-col">
+          <div className="mx-0 p-0">
             <HorizontalTabs tabs={EventTypeTabs} linkProps={{ shallow: true }} />
           </div>
           <div className="w-full ltr:mr-2 rtl:ml-2">
             <div
               className={classNames(
-                "mt-4 rounded-md  border-neutral-200 bg-white sm:mx-0 xl:mt-0",
-                disableBorder ? "border-0 xl:-mt-4 " : "p-2 md:border md:p-6"
+                "mx-0 mt-4 border-neutral-200 bg-white",
+                disableBorder ? "-mt-4 border-0" : "p-2 md:border md:p-6"
               )}>
               {children}
             </div>

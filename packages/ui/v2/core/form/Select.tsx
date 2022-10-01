@@ -54,7 +54,7 @@ function Select<
   return (
     <ReactSelect
       className={classNames(
-        "cal-react-select-container block h-[36px] w-full min-w-0 flex-1 rounded-md text-sm",
+        "cal-react-select-container block h-[36px] w-full min-w-0 flex-1 text-sm",
         className
       )}
       classNamePrefix="cal-react-select"
